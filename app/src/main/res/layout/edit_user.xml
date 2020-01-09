@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".users.EditUser">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95"/>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/editUserEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/type_email"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="6dp"
+                app:cardBackgroundColor="@color/colorAccentLight"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/nun"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/nickname"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/editUserNickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="@string/type_nickname"
+                        android:textColorHint="@color/backgroundColor"
+                        android:textColor="@android:color/black"
+                        android:inputType="text" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/change"
+                        android:layout_gravity="center"
+                        android:backgroundTint="?attr/colorAccent"
+                        android:textStyle="bold"
+                        android:id="@+id/editUserChangeNickname"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="80dp"
+                android:elevation="6dp"
+                app:cardBackgroundColor="@color/colorAccentLight"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <Switch
+                        android:id="@+id/editUserIsAdmin"
+                        android:theme="@style/DarkThemeSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:switchPadding="5dp"
+                        android:text="@string/isAdmin"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/change"
+                        android:layout_gravity="center"
+                        android:backgroundTint="?attr/colorAccent"
+                        android:textStyle="bold"
+                        android:id="@+id/editUserChangeAdmin"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

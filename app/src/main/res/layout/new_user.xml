@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alphadvlpr.infiniteminds.users.NewUser"
+    android:background="?attr/backgroundColor"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95"/>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="6dp"
+                app:cardBackgroundColor="@color/colorAccentLight"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:text="@string/email"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newUserEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="@string/type_email"
+                        android:textColorHint="@color/backgroundColor"
+                        android:textColor="@android:color/black"
+                        android:inputType="textEmailAddress"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="6dp"
+                app:cardBackgroundColor="@color/colorAccentLight"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/nun"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/nickname"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newUserNickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="@string/type_nickname"
+                        android:textColorHint="@color/backgroundColor"
+                        android:textColor="@android:color/black"
+                        android:inputType="text" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="6dp"
+                app:cardBackgroundColor="@color/colorAccentLight"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/nup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/password"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/newUserPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:hint="@string/type_password"
+                        android:textColorHint="@color/backgroundColor"
+                        android:textColor="@android:color/black" />
+
+                    <EditText
+                        android:id="@+id/newUserPasswordConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="textPassword"
+                        android:hint="@string/confirm_password"
+                        android:textColorHint="@color/backgroundColor"
+                        android:textColor="@android:color/black" />
+
+                    <Switch
+                        android:id="@+id/newUserShowPasswords"
+                        android:theme="@style/DarkThemeSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:switchPadding="5dp"
+                        android:text="@string/show_password"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/newUserCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"
+        android:text="@string/save"
+        android:textColor="@android:color/black"
+        android:backgroundTint="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

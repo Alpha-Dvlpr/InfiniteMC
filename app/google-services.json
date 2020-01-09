@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "263669996",
+    "firebase_url": "https://infinitemc-ec3d4.firebaseio.com",
+    "project_id": "infinitemc-ec3d4",
+    "storage_bucket": "infinitemc-ec3d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263669996:android:1816e8b2943e854dd9fdc9",
+        "android_client_info": {
+          "package_name": "com.alphadvlpr.infiniteminds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263669996-8aldu852rm97jtord8dppsidde1f2dj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alphadvlpr.infiniteminds",
+            "certificate_hash": "02b3c6f909bd9281cf3d0fb1a50209b799901aaf"
+          }
+        },
+        {
+          "client_id": "263669996-9s8970en1j7t3h323arrqthnelir9h4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgb41XTLK4td53xSdGAIrRPCHdJryoNOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263669996-9s8970en1j7t3h323arrqthnelir9h4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

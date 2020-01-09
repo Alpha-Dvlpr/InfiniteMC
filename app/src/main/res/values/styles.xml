@@ -1,0 +1,21 @@
+<resources>
+    <style name="DarkAppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="backgroundColor">@color/backgroundColor</item>
+    </style>
+
+    <style name="DarkThemeSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/activeSwitch</item>
+        <item name="colorSwitchThumbNormal">@color/inactiveSwitch</item>
+        <item name="android:colorForeground">@color/switchForeground</item>
+    </style>
+
+    <style name="DarkAppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DarkAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="DarkAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

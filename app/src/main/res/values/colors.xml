@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue">#2621B5</color>
+    <color name="blueDark">#070369</color>
+    <color name="blueLight">#6E6AE3</color>
+
+    <color name="colorAccent">#FFC40B</color>
+    <color name="colorAccentDark">#967200</color>
+    <color name="colorAccentLight">#FFE07F</color>
+
+    <color name="backgroundColor">#424242</color>
+    <color name="inactiveSwitch">#F1F1F1</color>
+    <color name="activeSwitch">#46BDBF</color>
+    <color name="switchForeground">#42221f1f</color>
+</resources>

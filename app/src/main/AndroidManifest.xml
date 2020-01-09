@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.alphadvlpr.infiniteminds">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="true"
+        android:theme="@style/DarkAppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".users.EditUser"></activity>
+        <activity
+            android:name=".navigation.Home"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".categories.CategoriesList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".articles.EditArticle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".articles.ArticlesList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".users.UsersList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.Search"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".navigation.Info"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.Trending"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".users.NewUser"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".navigation.Profile"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".navigation.MainInterface"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.Login"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".articles.NewArticle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".navigation.Content"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2122172706327985~8237512049" />
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>

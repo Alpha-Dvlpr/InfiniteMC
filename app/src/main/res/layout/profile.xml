@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    android:orientation="vertical"
+    tools:context="com.alphadvlpr.infiniteminds.navigation.Profile">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9"/>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pcu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="CURRENT USER"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/profilePublished"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/published"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/profileChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/colorAccentLight"
+                android:text="@string/change_password"
+                android:textColor="@android:color/black" />
+
+            <EditText
+                android:id="@+id/profileNewNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/new_nickname"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/profileChangeNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccentLight"
+                android:text="@string/change_username"
+                android:textColor="@android:color/black" />
+
+            <EditText
+                android:id="@+id/profileNewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/new_email_hint"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/profileNewEmailConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/confirm_email_hint"
+                android:inputType="textEmailAddress" />
+
+            <Button
+                android:id="@+id/profileChangeEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccentLight"
+                android:text="@string/change_email" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/profileDeleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/delete_account"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

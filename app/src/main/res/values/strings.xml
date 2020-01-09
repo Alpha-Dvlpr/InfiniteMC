@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">InfiniteMC</string>
+
+    <!-- AD MOB -->
+    <string name="adTest">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="adPublish">ca-app-pub-2122172706327985/1613228097</string>
+
+    <!-- CONTENT && ITEM_ARTICLE_SMALL && ARTICLE_LIST && ITEM_ARTICLE_BIG -->
+    <string name="content_categories">CATEGORÍAS</string>
+    <string name="content_images">IMÁGENES</string>
+    <string name="content_server_1">DESCARGAR</string>
+    <string name="content_server_2">OPCIÓN 2</string>
+    <string name="content_server_3">OPCIÓN 3</string>
+    <string name="content_server_4">OPCIÓN 4</string>
+    <string name="content_additional_links">ENLACES DE DESCARGA ADICIONALES</string>
+    <string name="title">TITULO</string>
+    <string name="visits_counter">Visitas: </string>
+    <string name="open_entry">ABRIR</string>
+    <string name="lorem">Lorem ipsum dolor sit amet.</string>
+
+    <!-- INFO -->
+    <string name="report">Reportar errores</string>
+    <string name="contact">Contactar</string>
+    <string name="privacy">Política de privacidad</string>
+    <string name="share_app">Compartir apliacción</string>
+
+    <!-- PROFILE && MAIN INTERFACE -->
+    <string name="current_user">USUARIO ACTUAL</string>
+    <string name="sign_out">CERRAR SESIÓN</string>
+    <string name="profile">PERFIL</string>
+    <string name="publish">PUBLICAR</string>
+    <string name="users">USUARIOS</string>
+    <string name="edit">EDITAR</string>
+    <string name="categories">CATEGORIAS</string>
+    <string name="published">PUBLICADOS</string>
+    <string name="new_nickname">Nuevo Nickname</string>
+    <string name="new_email_hint">Nuevo Email</string>
+    <string name="confirm_email_hint">Confirmar Email</string>
+    <string name="change_email">CAMBIAR EMAIL</string>
+    <string name="delete_account">ELIMINAR CUENTA</string>
+    <string name="change_username">CAMBIAR NOMBRE USUARIO</string>
+
+    <!-- SEARCH -->
+    <string name="search_hint">Buscar…</string>
+
+    <!-- ITEM_CATEGORIES && CATEGORIES_LIST-->
+    <string name="category">CATEGORÍA</string>
+    <string name="categories_disclaimer">ESTA LISTA ES SOLO PARA LAS CATEGORÍAS DE BÚSQUEDA RÁPIDA DEL MENÚ DE BÚSQUEDA</string>
+
+    <!-- EDIT_ARTICLE && ARTICLE_LIST && NEW_ARTICLE -->
+    <string name="article_title">TITULO (*)</string>
+    <string name="edit_article_title">TITULO</string>
+    <string name="article_content">CONTENIDO (*)</string>
+    <string name="article_images">IMÁGENES</string>
+    <string name="article_take_picture">SELECCIONAR IMAGEN</string>
+    <string name="article_links">ENLACES DE DESCARGA</string>
+    <string name="article_download_link_1">Enlace de descarga 1</string>
+    <string name="article_download_link_2">Enlace de descarga 2</string>
+    <string name="article_download_link_3">Enlace de descarga 3</string>
+    <string name="article_download_link_4">Enlace de descarga 4</string>
+    <string name="article_categories">CATEGORIAS</string>
+    <string name="article_category_1">Categoría 1</string>
+    <string name="article_category_2">Categoría 2</string>
+    <string name="article_category_3">Categoría 3</string>
+    <string name="article_category_4">Categoría 4</string>
+    <string name="article_category_5">Categoría 5</string>
+    <string name="article_category_6">Categoría 6</string>
+    <string name="article_publish">PUBLICAR</string>
+    <string name="article_cancel">CANCELAR</string>
+    <string name="article_update">ACTUALIZAR</string>
+    <string name="article_delete">ELIMINAR</string>
+
+    <!-- LOGIN && ITEM_USER && USER_LIST && NEW_USER -->
+    <string name="nickname">NICKNAME</string>
+    <string name="email">EMAIL</string>
+    <string name="show_password">MOSTRAR CONTRASEÑA</string>
+    <string name="password">CONTRASEÑA</string>
+    <string name="change_password">CAMBIAR CONTRASEÑA</string>
+    <string name="change">CAMBIAR</string>
+    <string name="login">INICIAR SESIÓN</string>
+    <string name="type_email">Introduce un email</string>
+    <string name="type_password">Introduce contraseña</string>
+    <string name="confirm_password">Confirma la contraseña</string>
+    <string name="type_nickname">Introduce un nickname</string>
+    <string name="isAdmin">ADMINISTRADOR</string>
+    <string name="save">GUARDAR</string>
+    <string name="login_disclaimer">ESTE MENÚ ES SOLO PARA LOS MIEMBROS DEL EQUIPO DE TLIVECRAFT</string>
+
+    <!-- APP BAR MENU -->
+    <string name="trending">TRENDING</string>
+    <string name="info">INFO</string>
+</resources>

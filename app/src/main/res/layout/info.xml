@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alphadvlpr.infiniteminds.navigation.Info"
+    android:background="?attr/backgroundColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".navigation.Info">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85"/>
+
+        <Button
+            android:id="@+id/infoPrivacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccentLight"
+            android:text="@string/privacy"
+            android:layout_marginTop="32dp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline11"
+            app:layout_constraintEnd_toEndOf="@id/guideline12"/>
+
+        <Button
+            android:id="@+id/infoShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccentLight"
+            android:text="@string/share_app"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/infoPrivacy"
+            app:layout_constraintStart_toStartOf="@id/guideline11"
+            app:layout_constraintEnd_toEndOf="@id/guideline12" />
+
+        <Button
+            android:id="@+id/infoReport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccentLight"
+            android:text="@string/report"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/infoShare"
+            app:layout_constraintStart_toStartOf="@id/guideline11"
+            app:layout_constraintEnd_toEndOf="@id/guideline12" />
+
+        <Button
+            android:id="@+id/infoContact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccentLight"
+            android:text="@string/contact"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/infoReport"
+            app:layout_constraintStart_toStartOf="@id/guideline11"
+            app:layout_constraintEnd_toEndOf="@id/guideline12"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/infoBottomAppBar"
+        android:layout_gravity="bottom"
+        app:menu="@menu/app_menu_info"
+        app:hideOnScroll="true"
+        app:fabAlignmentMode="end"
+        app:navigationIcon="@drawable/ic_home"
+        android:paddingStart="15dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/infoSearchFAB"
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@color/blueLight"
+        app:layout_anchor="@id/infoBottomAppBar"
+        app:maxImageSize="24dp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
