@@ -61,9 +61,7 @@ public class Content extends AppCompatActivity {
         ArrayList<String> imagesList = receivedIntent.getStringArrayListExtra("image"),
                 selectedCategories = receivedIntent.getStringArrayListExtra("categories");
         String selectedContent = receivedIntent.getStringExtra("content"),
-                selectedAuthor = receivedIntent.getStringExtra("author"),
-                selectedTitle = receivedIntent.getStringExtra("title"),
-                selectedDate = receivedIntent.getStringExtra("date");
+                selectedTitle = receivedIntent.getStringExtra("title");
         downloadURL = receivedIntent.getStringArrayListExtra("downloadURL");
 
         title.setText(Objects.equals(selectedTitle, "") ? "sin titulo" : selectedTitle);
@@ -100,10 +98,7 @@ public class Content extends AppCompatActivity {
         if(Objects.equals(selectedContent, "")){
             contentContainer.setVisibility(View.GONE);
             mainDownloadButton.setVisibility(View.GONE);
-        }else{
-            String text = "Publicado el " + selectedDate + ".\n\n" + selectedContent;
-            content.setText(text);
-        }
+        }else{ content.setText(selectedContent); }
 
         for(String s : Objects.requireNonNull(selectedCategories)){ if(!s.equals("")){ categoriesCounter++; } }
 

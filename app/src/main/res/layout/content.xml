@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:gravity="center"
-                    android:text="@string/title"
+                    android:text="@string/article_title_normal"
                     android:textAllCaps="true"
                     android:textColor="@android:color/black"
                     android:textSize="24sp"
@@ -157,7 +157,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="15dp"
                         android:gravity="center"
-                        android:text="@string/content_categories"
+                        android:text="@string/categories"
                         android:textColor="@android:color/black"
                         android:textStyle="bold" />
 
@@ -208,17 +208,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"
-                            android:textAllCaps="true"
-                            android:text="@string/content_images"
-                            android:textSize="18sp"
-                            android:layout_marginBottom="10dp"/>
                     </LinearLayout>
 
                     <androidx.cardview.widget.CardView

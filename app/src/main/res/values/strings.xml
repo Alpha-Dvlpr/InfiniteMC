@@ -6,85 +6,81 @@
     <string name="adPublish">ca-app-pub-2122172706327985/1613228097</string>
 
     <!-- CONTENT && ITEM_ARTICLE_SMALL && ARTICLE_LIST && ITEM_ARTICLE_BIG -->
-    <string name="content_categories">CATEGORÍAS</string>
-    <string name="content_images">IMÁGENES</string>
-    <string name="content_server_1">DESCARGAR</string>
-    <string name="content_server_2">OPCIÓN 2</string>
-    <string name="content_server_3">OPCIÓN 3</string>
-    <string name="content_server_4">OPCIÓN 4</string>
-    <string name="content_additional_links">ENLACES DE DESCARGA ADICIONALES</string>
-    <string name="title">TITULO</string>
-    <string name="visits_counter">Visitas: </string>
-    <string name="open_entry">ABRIR</string>
+    <string name="content_server_1">DOWNLOAD</string>
+    <string name="content_server_2">OPTION 2</string>
+    <string name="content_server_3">OPTION 3</string>
+    <string name="content_server_4">OPTION 4</string>
+    <string name="content_additional_links">OTHER DOWNLOAD LINKS</string>
+    <string name="visits_counter">Visits: </string>
     <string name="lorem">Lorem ipsum dolor sit amet.</string>
 
     <!-- INFO -->
-    <string name="report">Reportar errores</string>
-    <string name="contact">Contactar</string>
-    <string name="privacy">Política de privacidad</string>
-    <string name="share_app">Compartir apliacción</string>
+    <string name="report">BUG REPORT</string>
+    <string name="contact">CONTACT</string>
+    <string name="privacy">PRIVACY POLICY</string>
+    <string name="share_app">SHARE APP</string>
 
     <!-- PROFILE && MAIN INTERFACE -->
-    <string name="current_user">USUARIO ACTUAL</string>
-    <string name="sign_out">CERRAR SESIÓN</string>
-    <string name="profile">PERFIL</string>
-    <string name="publish">PUBLICAR</string>
-    <string name="users">USUARIOS</string>
-    <string name="edit">EDITAR</string>
-    <string name="categories">CATEGORIAS</string>
-    <string name="published">PUBLICADOS</string>
-    <string name="new_nickname">Nuevo Nickname</string>
-    <string name="new_email_hint">Nuevo Email</string>
-    <string name="confirm_email_hint">Confirmar Email</string>
-    <string name="change_email">CAMBIAR EMAIL</string>
-    <string name="delete_account">ELIMINAR CUENTA</string>
-    <string name="change_username">CAMBIAR NOMBRE USUARIO</string>
+    <string name="current_user">CURRENT USER</string>
+    <string name="sign_out">LOG OUT</string>
+    <string name="profile">PROFILE</string>
+    <string name="publish">PUBLISH</string>
+    <string name="users">USERS</string>
+    <string name="edit">EDIT</string>
+    <string name="categories">CATEGORIES</string>
+    <string name="published">PUBLISHED</string>
+    <string name="new_nickname">New Nickname</string>
+    <string name="new_email_hint">New Email</string>
+    <string name="confirm_email_hint">Confirm Email</string>
+    <string name="change_email">CHANGE EMAIL</string>
+    <string name="delete_account">DELETE ACCOUNT</string>
+    <string name="change_username">CHANGE NICKNAME</string>
 
     <!-- SEARCH -->
-    <string name="search_hint">Buscar…</string>
+    <string name="search_hint">Search…</string>
 
     <!-- ITEM_CATEGORIES && CATEGORIES_LIST-->
-    <string name="category">CATEGORÍA</string>
-    <string name="categories_disclaimer">ESTA LISTA ES SOLO PARA LAS CATEGORÍAS DE BÚSQUEDA RÁPIDA DEL MENÚ DE BÚSQUEDA</string>
+    <string name="category">CATEGORY</string>
+    <string name="categories_disclaimer">THIS LIST IS ONLY FOR QUICK SEARCH CATEGORIES IN SEARCH MENU</string>
 
     <!-- EDIT_ARTICLE && ARTICLE_LIST && NEW_ARTICLE -->
-    <string name="article_title">TITULO (*)</string>
-    <string name="edit_article_title">TITULO</string>
-    <string name="article_content">CONTENIDO (*)</string>
-    <string name="article_images">IMÁGENES</string>
-    <string name="article_take_picture">SELECCIONAR IMAGEN</string>
-    <string name="article_links">ENLACES DE DESCARGA</string>
-    <string name="article_download_link_1">Enlace de descarga 1</string>
-    <string name="article_download_link_2">Enlace de descarga 2</string>
-    <string name="article_download_link_3">Enlace de descarga 3</string>
-    <string name="article_download_link_4">Enlace de descarga 4</string>
-    <string name="article_categories">CATEGORIAS</string>
-    <string name="article_category_1">Categoría 1</string>
-    <string name="article_category_2">Categoría 2</string>
-    <string name="article_category_3">Categoría 3</string>
-    <string name="article_category_4">Categoría 4</string>
-    <string name="article_category_5">Categoría 5</string>
-    <string name="article_category_6">Categoría 6</string>
-    <string name="article_publish">PUBLICAR</string>
-    <string name="article_cancel">CANCELAR</string>
-    <string name="article_update">ACTUALIZAR</string>
-    <string name="article_delete">ELIMINAR</string>
+    <string name="article_title_needed">TITLE (*)</string>
+    <string name="article_title_normal">TITLE</string>
+    <string name="article_content">CONTENT (*)</string>
+    <string name="article_images">IMAGES</string>
+    <string name="article_take_picture">SELECT IMAGE</string>
+    <string name="article_links">DOWNLOAD LINKS</string>
+    <string name="article_download_link_1">Download link 1</string>
+    <string name="article_download_link_2">Download link 2</string>
+    <string name="article_download_link_3">Download link 3</string>
+    <string name="article_download_link_4">Download link 4</string>
+    <string name="article_categories">CATEGORIES</string>
+    <string name="article_category_1">Category 1</string>
+    <string name="article_category_2">Category 2</string>
+    <string name="article_category_3">Category 3</string>
+    <string name="article_category_4">Category 4</string>
+    <string name="article_category_5">Category 5</string>
+    <string name="article_category_6">Category 6</string>
+    <string name="article_publish">PUBLISH</string>
+    <string name="article_cancel">CANCEL</string>
+    <string name="article_update">UPDATE</string>
+    <string name="article_delete">DELETE</string>
 
     <!-- LOGIN && ITEM_USER && USER_LIST && NEW_USER -->
     <string name="nickname">NICKNAME</string>
     <string name="email">EMAIL</string>
-    <string name="show_password">MOSTRAR CONTRASEÑA</string>
-    <string name="password">CONTRASEÑA</string>
-    <string name="change_password">CAMBIAR CONTRASEÑA</string>
-    <string name="change">CAMBIAR</string>
-    <string name="login">INICIAR SESIÓN</string>
-    <string name="type_email">Introduce un email</string>
-    <string name="type_password">Introduce contraseña</string>
-    <string name="confirm_password">Confirma la contraseña</string>
-    <string name="type_nickname">Introduce un nickname</string>
-    <string name="isAdmin">ADMINISTRADOR</string>
-    <string name="save">GUARDAR</string>
-    <string name="login_disclaimer">ESTE MENÚ ES SOLO PARA LOS MIEMBROS DEL EQUIPO DE FAIAM NA</string>
+    <string name="show_password">SHOW PASSWORD</string>
+    <string name="password">PASSWORD</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="change">CHANGE</string>
+    <string name="login">LOG IN</string>
+    <string name="type_email">Type an email</string>
+    <string name="type_password">Type a password</string>
+    <string name="confirm_password">Confirm the password</string>
+    <string name="type_nickname">Type a nickname</string>
+    <string name="isAdmin">ADMIN</string>
+    <string name="save">SAVE</string>
+    <string name="login_disclaimer">THIS MENU IS ONLY FOR FAIAM NA TEAM MEMBERS</string>
 
     <!-- APP BAR MENU -->
     <string name="trending">TRENDING</string>

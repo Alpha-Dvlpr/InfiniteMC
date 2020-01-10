@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
                         android:gravity="center"
-                        android:text="@string/edit_article_title"
+                        android:text="@string/article_title_normal"
                         android:textStyle="bold"/>
 
                     <EditText

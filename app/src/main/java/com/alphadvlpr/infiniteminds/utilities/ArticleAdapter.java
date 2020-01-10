@@ -19,13 +19,10 @@ import com.alphadvlpr.infiniteminds.navigation.Content;
 import com.alphadvlpr.infiniteminds.objects.Article;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -71,7 +68,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     b.putLong("visits", article.getVisits());
                     b.putStringArrayList("downloadURL", article.getDownloadURL());
                     b.putStringArrayList("categories", article.getCategories());
-                    b.putString("date", convertDate(article.getDate()));
 
                     Intent toContent = new Intent(context, Content.class);
                     toContent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -115,13 +111,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int getRealPosition(int position) {
         if (LIST_AD_DELTA == 0) { return position; }
         else { return position - position / LIST_AD_DELTA; }
-    }
-
-    private String convertDate(Timestamp t){
-        String day = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(t.toDate());
-        String hour = new SimpleDateFormat("HH:mm", Locale.FRANCE).format(t.toDate());
-
-        return  day + " a las " + hour;
     }
 
     class ArticleViewHolder extends RecyclerView.ViewHolder{
