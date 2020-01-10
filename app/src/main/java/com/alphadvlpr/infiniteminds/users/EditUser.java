@@ -13,12 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alphadvlpr.infiniteminds.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
@@ -52,13 +48,13 @@ public class EditUser extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                makeToast("Estado administrador actualizado");
+                                makeToast("ADMIN STATUS UPDATED SUCCESSFULLY");
                                 finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onFailure(@NonNull Exception e) { makeToast("Error al actualizar"); }
+                            public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE UPDATING ADMIN STATUS"); }
                         });
             }
         });
@@ -68,20 +64,20 @@ public class EditUser extends AppCompatActivity {
             public void onClick(View v) {
                 String nick = newNickname.getText().toString();
 
-                if (nick.isEmpty()){ makeToast("El nickname no puede estar vacío"); }
+                if (nick.isEmpty()){ makeToast("NICKNAME CAN'T BE EMPTY"); }
                 else{
                     mDatabase.collection("users").document(Objects.requireNonNull(prev.getStringExtra("email")))
                             .update("nickname", nick)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    makeToast("Nickname actualizado");
+                                    makeToast("NICKNAME UPDATED SUCCESSFULLY");
                                     finish();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) { makeToast("Error al actualizar"); }
+                                public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE UPDATING NICKNAME"); }
                             });
                 }
             }

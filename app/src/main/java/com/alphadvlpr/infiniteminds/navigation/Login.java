@@ -89,9 +89,9 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        makeToast("Bienvenido!");
+                                        makeToast("WELCOME!");
                                         passData(etUser.getText().toString(), new Intent(Login.this, MainInterface.class));
-                                    } else { makeToast("Error al iniciar sesión!!"); }
+                                    } else { makeToast("ERROR WHILE LOGGING IN!!"); }
 
                                     etUser.setText("");
                                     etPassword.setText("");
@@ -100,7 +100,7 @@ public class Login extends AppCompatActivity {
                                 }
                             });
 
-                } else if (errPass && errUser) { makeToast("Ambos campos son obligatorios"); }
+                } else if (errPass && errUser) { makeToast("BOTH FIELD ARE REQUIRED"); }
             }
         });
 
@@ -110,7 +110,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 final String selectedEmail;
 
-                if(etUser.getText().toString().isEmpty()){ makeToast("Debes introducir un email"); }
+                if(etUser.getText().toString().isEmpty()){ makeToast("YOU MUST TYPE AN EMAIL"); }
                 else{
                     selectedEmail = etUser.getText().toString();
                     auth = FirebaseAuth.getInstance();
@@ -118,8 +118,8 @@ public class Login extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){ makeToast("Email enviado a '" + selectedEmail + "'"); }
-                                    else{ makeToast("No se ha podido enviar el email"); }
+                                    if(task.isSuccessful()){ makeToast("EMAIL SENT TO '" + selectedEmail + "'"); }
+                                    else{ makeToast("COULD NOT SEND EMAIL"); }
                                 }
                             });
                 }

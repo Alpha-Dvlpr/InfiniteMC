@@ -40,7 +40,7 @@ public class MainInterface extends AppCompatActivity {
         final Long published = prev.getLongExtra("published", -1L);
         final boolean admin = prev.getBooleanExtra("admin", false);
 
-        currentUserEmail.setText("USUARIO ACTUAL\n" + email);
+        currentUserEmail.setText("CURRENT USER\n" + email);
 
         if(!admin){
             buttonUsers.setVisibility(View.GONE);
@@ -51,7 +51,7 @@ public class MainInterface extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                makeToast("Esperamos volver a verte!");
+                makeToast("WISH TO SEE YOU SOON!");
 
                 Intent intent = new Intent(MainInterface.this, Login.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

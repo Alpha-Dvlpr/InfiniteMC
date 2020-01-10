@@ -90,8 +90,8 @@ public class NewUser extends AppCompatActivity {
                     }
                 }
 
-                if(pass.isEmpty() || mail.isEmpty() || nick.isEmpty() || passConfirm.isEmpty()){ makeToast("Todos los campos son abligatorios"); }
-                else if(passError){ makeToast("Las contraseñas no coinciden"); }
+                if(pass.isEmpty() || mail.isEmpty() || nick.isEmpty() || passConfirm.isEmpty()){ makeToast("ALL FIELDS ARE REQUIRED"); }
+                else if(passError){ makeToast("PASSWORDS DO NOT MATCH"); }
                 else{
                     final User user = new User(mail, nick, 0L, false);
 
@@ -106,16 +106,16 @@ public class NewUser extends AppCompatActivity {
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        makeToast("Usuario creado correctamente");
+                                                        makeToast("USER CREATED SUCCESSFULLY");
                                                         FirebaseAuth.getInstance().signOut();
                                                         finish();
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
                                                     @Override
-                                                    public void onFailure(@NonNull Exception e) { makeToast("Error al guardar la informacion del usuario"); }
+                                                    public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE SAVING USER DATA"); }
                                                 });
-                                    }else{ makeToast("Error al crear el usuario, puede que ya exista"); }
+                                    }else{ makeToast("ERROR CREATING THE USER, MAYBE IT ALREADY EXISTS"); }
                                 }
                             });
                 }

@@ -19,7 +19,6 @@ import com.alphadvlpr.infiniteminds.users.EditUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 

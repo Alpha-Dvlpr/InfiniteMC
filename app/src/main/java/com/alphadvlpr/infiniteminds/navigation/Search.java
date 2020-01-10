@@ -79,7 +79,7 @@ public class Search extends AppCompatActivity {
                 ArrayList<String> keywords = new ArrayList<>();
                 for(String s : splitQuery) { if(!s.equals("")) { keywords.add(s); } }
 
-                if(splitQuery.length >= 10){ makeToast("El máximo son 10 palabras"); }
+                if(splitQuery.length >= 10){ makeToast("MAXIMUM 10 WORDS"); }
                 else{
                     searchByName(keywords);
                     searchByCategory(keywords);
@@ -170,7 +170,7 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){ makeToast("No se han encontrado títulos coincidentes."); }
+                        if(queryDocumentSnapshots.isEmpty()){ makeToast("NO ARTICLES FOUND"); }
                         else{
                             dataSearchList = new ArrayList<>();
 
@@ -200,7 +200,7 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){ makeToast("No se han encontrado categorías."); }
+                        if(queryDocumentSnapshots.isEmpty()){ makeToast("NO CATEGORIES FOUND"); }
                         else{
                             dataSearchList = new ArrayList<>();
 
@@ -230,7 +230,7 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){ makeToast("No existe ningún artículo en la categoría '" + s + "'"); }
+                        if(queryDocumentSnapshots.isEmpty()){ makeToast("THERE ARE NO ARTICLES WITH '" + s + "' CATEGORY"); }
                         else{
                             dataSearchList = new ArrayList<>();
 

@@ -117,8 +117,8 @@ public class EditArticle extends AppCompatActivity {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar snack = Snackbar.make(v, "¿ELIMINAR EL ARTÍCULO?", Snackbar.LENGTH_LONG);
-                snack.setAction("SI", new View.OnClickListener() {
+                Snackbar snack = Snackbar.make(v, "¿DELETE ARTICLE?", Snackbar.LENGTH_LONG);
+                snack.setAction("YES", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mDatabase.collection("articles").document(reference)
@@ -127,9 +127,9 @@ public class EditArticle extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
-                                            makeToast("Documento eliminado con éxito");
+                                            makeToast("DOCUMENT DELETED SUCCESSFULLY");
                                             finish();
-                                        } else{ makeToast("No se ha podido eliminar el artículo"); }
+                                        } else{ makeToast("COULD NOT DELETE THE ARTICLE"); }
                                     }
                                 });
                     }
@@ -140,7 +140,7 @@ public class EditArticle extends AppCompatActivity {
         buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(images.size() == 2){ makeToast("Solo se permiten 2 imagenes"); }
+                if(images.size() == 2){ makeToast("Maximum 2 images per article"); }
                 else{
                     String[] types = {"image/jpg", "image/jpeg"};
 
@@ -148,7 +148,7 @@ public class EditArticle extends AppCompatActivity {
                     camera.setType("image/*");
                     camera.setAction(Intent.ACTION_GET_CONTENT);
                     camera.putExtra(Intent.EXTRA_MIME_TYPES, types);
-                    startActivityForResult(Intent.createChooser(camera, "Selecciona una imagen."), SELECT_FILE);
+                    startActivityForResult(Intent.createChooser(camera, "Select an image"), SELECT_FILE);
                 }
             }
         });
@@ -178,7 +178,7 @@ public class EditArticle extends AppCompatActivity {
                 ArrayList<String> newImagesStringBitmap = new ArrayList<>();
                 for(Image i : images){ newImagesStringBitmap.add(i.getStringBitmap()); }
 
-                if(newContent.isEmpty()){ makeToast("Los campos con '*' son obligatorios."); }
+                if(newContent.isEmpty()){ makeToast("Fields with '*' are required"); }
                 else{
                     buttonUpdate.setVisibility(View.GONE);
                     buttonCancel.setVisibility(View.GONE);
@@ -196,7 +196,7 @@ public class EditArticle extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    makeToast("DOCUMENTO ACTUALIZADO CON EXITO");
+                                    makeToast("ARTICLE UPDATED SUCCESSFULLY");
                                     finish();
                                 }
                             })
@@ -208,7 +208,7 @@ public class EditArticle extends AppCompatActivity {
                                     buttonDelete.setVisibility(View.VISIBLE);
                                     progressBar.setVisibility(View.GONE);
 
-                                    makeToast("ERROR AL ACTUALIZAR EL DOCUMENTO");
+                                    makeToast("ERROR WHILE UPDATING THE ARTICLE");
                                 }
                             });
                 }

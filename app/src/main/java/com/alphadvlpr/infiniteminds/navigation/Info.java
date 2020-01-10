@@ -80,22 +80,22 @@ public class Info extends AppCompatActivity {
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("text/plain");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Addon-Mods For MCPE bugs");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ADDON-MODS FOR MCPE BUGS");
                 emailIntent.putExtra(Intent.EXTRA_TEXT,
-                        "*** DESCRIBE EL ERROR DE LA MANERA MÁS PRECISA POSIBLE ***\n" +
-                                "*** SI PUEDES ADJUNTA CAPTURAS DEL ERROR ***\n\n" +
-                                "EL ERROR ES: \n" +
-                                "OCURRIÓ HACIENDO: \n" +
-                                "¿SE PUEDE REPRODUCIR DE MANERA SENCILLA?: ");
+                        "*** DESCRIBE THE ERROR THE BEST WAY POSSIBLE ***\n" +
+                                "*** IF YOU CAN ADD IMAGES OF THE ERROR ***\n\n" +
+                                "THE ERROR IS: \n" +
+                                "HAPPENED DOING: \n" +
+                                "CAN IT BE EASILY FORCED TO HAPPEN?: ");
 
-                try { startActivity(Intent.createChooser(emailIntent, "REPORTAR ERRORES")); }
-                catch (android.content.ActivityNotFoundException ex) { makeToast("Error al procesar la acción."); }
+                try { startActivity(Intent.createChooser(emailIntent, "REPORT BUGS")); }
+                catch (android.content.ActivityNotFoundException ex) { makeToast("ERROR WHILE DOING THE ACTION"); }
             }
         });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { makeToast("PROXIMAMENTE"); }
+            public void onClick(View v) { makeToast("SOON"); }
         });
 
         privacy.setOnClickListener(new View.OnClickListener() {
@@ -112,11 +112,11 @@ public class Info extends AppCompatActivity {
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("text/plain");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Información sobre InfiniteMC");
-                emailIntent.putExtra(Intent.EXTRA_TEXT,"*** ESCRIBE AQUÍ EL MENSAJE ***");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "INFORMATION ABOUT ADDON-MODS FOR MCPE");
+                emailIntent.putExtra(Intent.EXTRA_TEXT,"*** TYPE HERE YOUR MESSAGE ***");
 
-                try { startActivity(Intent.createChooser(emailIntent, "ENVIAR EMAIL")); }
-                catch (android.content.ActivityNotFoundException ex) { makeToast("Error al procesar la acción."); }
+                try { startActivity(Intent.createChooser(emailIntent, "SEND EMAIL")); }
+                catch (android.content.ActivityNotFoundException ex) { makeToast("ERROR WHILE DOING THE ACTION"); }
             }
         });
     }

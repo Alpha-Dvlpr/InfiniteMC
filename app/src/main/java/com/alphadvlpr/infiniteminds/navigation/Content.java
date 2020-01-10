@@ -64,8 +64,8 @@ public class Content extends AppCompatActivity {
                 selectedTitle = receivedIntent.getStringExtra("title");
         downloadURL = receivedIntent.getStringArrayListExtra("downloadURL");
 
-        title.setText(Objects.equals(selectedTitle, "") ? "sin titulo" : selectedTitle);
-        visits.setText("Visitas: " + selectedDownloads);
+        title.setText(selectedTitle);
+        visits.setText("Visits: " + selectedDownloads);
 
         if(Objects.requireNonNull(imagesList).isEmpty()){
             imageContainer.setVisibility(View.GONE);

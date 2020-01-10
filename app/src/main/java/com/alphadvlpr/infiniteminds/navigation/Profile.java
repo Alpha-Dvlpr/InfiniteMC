@@ -57,8 +57,8 @@ public class Profile extends AppCompatActivity {
 
         final Intent prev = getIntent();
 
-        published.setText("Artículos publicados: " + prev.getLongExtra("published", -1L));
-        current.setText("USUARIO ACTUAL\n" + prev.getStringExtra("email"));
+        published.setText("Published articles: " + prev.getLongExtra("published", -1L));
+        current.setText("CURRENT USER\n" + prev.getStringExtra("email"));
 
         buttonChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +69,11 @@ public class Profile extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    makeToast("Email enviado a '" + user.getEmail() + "'");
+                                    makeToast("EMAIL SENT TO '" + user.getEmail() + "'");
                                     auth.signOut();
                                     finish();
                                 }
-                                else{ makeToast("No se ha podido enviar el email"); }
+                                else{ makeToast("COULD NOT SEND EMAIL"); }
                             }
                         });
             }
@@ -84,7 +84,7 @@ public class Profile extends AppCompatActivity {
             public void onClick(View v) {
                 String newNickname = editNewNick.getText().toString();
 
-                if(newNickname.isEmpty()){ makeToast("Debes introducir un nickname"); }
+                if(newNickname.isEmpty()){ makeToast("YOU MUST TYPE A NICKNAME"); }
                 else{
                     mDatabase
                             .collection("users")
@@ -93,7 +93,7 @@ public class Profile extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    makeToast("Nickname actualizado con éxito");
+                                    makeToast("NICKNAME UPDATED SUCCESSFULLY");
                                     editNewNick.setText("");
                                     FirebaseAuth.getInstance().signOut();
                                     finish();
@@ -101,7 +101,7 @@ public class Profile extends AppCompatActivity {
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) { makeToast("Error al actualizar el nickname"); }
+                                public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE UPDATING THE NICKNAME"); }
                             });
                 }
             }
@@ -113,20 +113,20 @@ public class Profile extends AppCompatActivity {
                 final String newMail = editNewMail.getText().toString();
                 final String confirmEmail = editConfirmNewMail.getText().toString();
 
-                if(newMail.isEmpty() || confirmEmail.isEmpty()){ makeToast("Debes introducir un email."); }
-                else if(!newMail.equals(confirmEmail)){ makeToast("Los emails no coinciden"); }
+                if(newMail.isEmpty() || confirmEmail.isEmpty()){ makeToast("YOU MUST TYPE AN EMAIL"); }
+                else if(!newMail.equals(confirmEmail)){ makeToast("EMAILS DOES NOT MATCH"); }
                 else{
                     user.updateEmail(newMail)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        makeToast("Email cambiado a '" + newMail + "'");
+                                        makeToast("EMAIL CHANGED TO '" + newMail + "'");
                                         editNewMail.setText("");
                                         editConfirmNewMail.setText("");
                                         FirebaseAuth.getInstance().signOut();
                                         finish();
-                                    } else{ makeToast("No se ha podido cambiar el email"); }
+                                    } else{ makeToast("COULD NOT CHANGE EMAIL"); }
                                 }
                             });
                 }
@@ -145,7 +145,7 @@ public class Profile extends AppCompatActivity {
                 final Switch showPassword = new Switch(v.getContext());
 
                 email.setHint("Email");
-                password.setHint("Contraseña");
+                password.setHint("Password");
                 showPassword.setText(R.string.show_password);
 
                 password.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -163,11 +163,11 @@ public class Profile extends AppCompatActivity {
                 layoutInside.addView(showPassword);
 
                 final AlertDialog dialogInside = new AlertDialog.Builder(Profile.this)
-                        .setTitle("CONFIRMA TUS CREDENCIALES")
+                        .setTitle("CONFIRM YOUR CREDENTIALS")
                         .setView(layoutInside)
                         .setCancelable(false)
-                        .setPositiveButton("BORRAR", null)
-                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("DELETE", null)
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
                         })
@@ -184,7 +184,7 @@ public class Profile extends AppCompatActivity {
                                 final String mail = email.getText().toString();
                                 String pass = password.getText().toString();
 
-                                if (mail.isEmpty() || pass.isEmpty()) { makeToast("Debes introducir tu email y tu contraseña"); }
+                                if (mail.isEmpty() || pass.isEmpty()) { makeToast("BOTH FIELDS ARE NEEDED"); }
                                 else {
                                     final FirebaseUser current = FirebaseAuth.getInstance().getCurrentUser();
                                     AuthCredential credential = EmailAuthProvider.getCredential(mail, pass);
@@ -205,7 +205,7 @@ public class Profile extends AppCompatActivity {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                                         if (task.isSuccessful()) {
-                                                                                            makeToast("Todos los datos borrados con éxito");
+                                                                                            makeToast("ALL DATA DELETED SUCCESSFULLY");
                                                                                             dialogInside.cancel();
 
                                                                                             Intent toHome = new Intent(Profile.this, Home.class);
@@ -214,16 +214,16 @@ public class Profile extends AppCompatActivity {
                                                                                             toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                                                             startActivity(toHome);
                                                                                             finish();
-                                                                                        } else { makeToast("Error al eliminar la cuenta"); }
+                                                                                        } else { makeToast("ERROR WHILE DELETING THE ACCOUNT"); }
                                                                                     }
                                                                                 });
                                                                     }
                                                                 })
                                                                 .addOnFailureListener(new OnFailureListener() {
                                                                     @Override
-                                                                    public void onFailure(@NonNull Exception e) { makeToast("No se han podido eliminar los datos del servidor"); }
+                                                                    public void onFailure(@NonNull Exception e) { makeToast("COULD NOT DELETE DATA FROM SERVER"); }
                                                                 });
-                                                    } else { makeToast("Error al iniciar sesión"); }
+                                                    } else { makeToast("ERROR WHILE LOGGING IN"); }
                                                 }
                                             });
                                 }

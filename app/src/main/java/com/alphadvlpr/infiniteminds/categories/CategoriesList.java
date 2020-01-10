@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Category;
@@ -58,16 +57,16 @@ public class CategoriesList extends AppCompatActivity {
                 layout.setPadding(10, 10, 10, 10);
 
                 final EditText categoryName = new EditText(view.getContext());
-                categoryName.setHint("Nombre de la categoría");
+                categoryName.setHint("Category name");
 
                 layout.addView(categoryName);
 
                 final AlertDialog dialog = new AlertDialog.Builder(CategoriesList.this)
-                        .setMessage("INTRODUCE EL NOMBRE DE LA CATEGORÍA")
+                        .setMessage("TYPE THE CATEGORY NAME")
                         .setView(layout)
                         .setCancelable(false)
-                        .setPositiveButton("AÑADIR", null)
-                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("ADD", null)
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
                         })
@@ -83,20 +82,20 @@ public class CategoriesList extends AppCompatActivity {
                             public void onClick(View v) {
                                 String name = StringProcessor.removeAccents(categoryName.getText().toString());
 
-                                if(name.isEmpty()){ makeToast("Debes introducir un nombre"); }
+                                if(name.isEmpty()){ makeToast("YOU MUST TYPE A NAME"); }
                                 else{
                                     mDatabase.collection("categories").document(name.toLowerCase())
                                             .set(new Category(name.toLowerCase()))
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    makeToast("Categoría añadida con éxito");
+                                                    makeToast("CATEGORY ADDED SUCCESSFULLY");
                                                     adapter.notifyDataSetChanged();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
-                                                public void onFailure(@NonNull Exception e) { makeToast("Error al añadir la categoría"); }
+                                                public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE ADDING THE CATEGORY"); }
                                             });
                                     dialog.dismiss();
                                 }

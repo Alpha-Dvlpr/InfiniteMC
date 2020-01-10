@@ -27,7 +27,6 @@ import com.alphadvlpr.infiniteminds.objects.Image;
 import com.alphadvlpr.infiniteminds.utilities.ImageDecoder;
 import com.alphadvlpr.infiniteminds.utilities.ImageListAdapter;
 import com.alphadvlpr.infiniteminds.utilities.StringProcessor;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -111,7 +110,7 @@ public class NewArticle extends AppCompatActivity {
                 if(content.isEmpty()){ textContent.setTextColor(Color.RED); }
                 else{ textContent.setTextColor(Color.BLACK); }
 
-                if(title.isEmpty() || content.isEmpty()){ makeToast("Los campos con '*' son obligatorios."); }
+                if(title.isEmpty() || content.isEmpty()){ makeToast("Fields with '*' are required"); }
                 else{
                     buttonCancel.setVisibility(View.GONE);
                     buttonPublish.setVisibility(View.GONE);
@@ -127,7 +126,7 @@ public class NewArticle extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    makeToast("DOCUMENTO CREADO CON EXITO");
+                                    makeToast("ARTICLE CREATED SUCCESSFULLY");
                                     finish();
                                 }
                             })
@@ -137,7 +136,7 @@ public class NewArticle extends AppCompatActivity {
                                     buttonCancel.setVisibility(View.VISIBLE);
                                     buttonPublish.setVisibility(View.VISIBLE);
                                     progressBar.setVisibility(View.GONE);
-                                    makeToast("ERROR AL CREAR EL DOCUMENTO");
+                                    makeToast("ERROR WHILE CREATING THE ARTICLE");
                                 }
                             });
 
@@ -155,7 +154,7 @@ public class NewArticle extends AppCompatActivity {
         buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(images.size() == 2){ makeToast("Solo se permiten 2 imagenes"); }
+                if(images.size() == 2){ makeToast("Maximum 2 images per article"); }
                 else{
                     String[] types = {"image/jpg", "image/jpeg"};
 
@@ -163,7 +162,7 @@ public class NewArticle extends AppCompatActivity {
                     camera.setType("image/*");
                     camera.setAction(Intent.ACTION_GET_CONTENT);
                     camera.putExtra(Intent.EXTRA_MIME_TYPES, types);
-                    startActivityForResult(Intent.createChooser(camera, "Selecciona una imagen."), SELECT_FILE);
+                    startActivityForResult(Intent.createChooser(camera, "Select an image"), SELECT_FILE);
                 }
             }
         });
