@@ -80,7 +80,7 @@ public class Info extends AppCompatActivity {
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("text/plain");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Error en InfiniteMC");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Addon-Mods For MCPE bugs");
                 emailIntent.putExtra(Intent.EXTRA_TEXT,
                         "*** DESCRIBE EL ERROR DE LA MANERA MÁS PRECISA POSIBLE ***\n" +
                                 "*** SI PUEDES ADJUNTA CAPTURAS DEL ERROR ***\n\n" +
@@ -100,10 +100,7 @@ public class Info extends AppCompatActivity {
 
         privacy.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                makeToast("PROXIMAMENTE");
-                //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://alphadvlpr.wixsite.com/home/privacy-policy")));
-            }
+            public void onClick(View v) { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://teaminfiniteminds.wixsite.com/website/blog/organiza-tu-equipo-de-la-manera-más-óptima"))); }
         });
 
         contact.setOnClickListener(new View.OnClickListener() {

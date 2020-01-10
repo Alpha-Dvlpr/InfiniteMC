@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".users.EditUser"></activity>
+        <activity
+            android:name=".users.EditUser"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".navigation.Home"
             android:screenOrientation="portrait">

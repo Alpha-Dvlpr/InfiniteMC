@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InfiniteMC</string>
+    <string name="app_name">Addon-Mods For MCPE</string>
 
     <!-- AD MOB -->
     <string name="adTest">ca-app-pub-3940256099942544/6300978111</string>
@@ -84,7 +84,7 @@
     <string name="type_nickname">Introduce un nickname</string>
     <string name="isAdmin">ADMINISTRADOR</string>
     <string name="save">GUARDAR</string>
-    <string name="login_disclaimer">ESTE MENÚ ES SOLO PARA LOS MIEMBROS DEL EQUIPO DE TLIVECRAFT</string>
+    <string name="login_disclaimer">ESTE MENÚ ES SOLO PARA LOS MIEMBROS DEL EQUIPO DE FAIAM NA</string>
 
     <!-- APP BAR MENU -->
     <string name="trending">TRENDING</string>
