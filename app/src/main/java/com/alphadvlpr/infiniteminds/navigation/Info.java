@@ -95,7 +95,14 @@ public class Info extends AppCompatActivity {
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { makeToast("SOON"); }
+            public void onClick(View v) {
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_SUBJECT, "DOWNLOAD APP");
+                share.putExtra(Intent.EXTRA_TEXT, "Download Addon-Mods for MCPE.\nhttps://play.google.com/store/apps/details?id=com.alphadvlpr.infiniteminds");
+
+                startActivity(Intent.createChooser(share, "SHARE APP"));
+            }
         });
 
         privacy.setOnClickListener(new View.OnClickListener() {
