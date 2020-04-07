@@ -17,6 +17,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class controls the articles list on the User's interface.
+ *
+ * @author AlphaDvlpr.
+ */
 public class ArticlesList extends AppCompatActivity {
 
     private RecyclerView listArticles;
@@ -24,6 +29,12 @@ public class ArticlesList extends AppCompatActivity {
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private ArticleListAdapter adapter;
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +45,31 @@ public class ArticlesList extends AppCompatActivity {
 
         swipeEditArticles.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() { initArticlesList(); }
+            public void onRefresh() {
+                initArticlesList();
+            }
         });
+
         initArticlesList();
     }
 
+    /**
+     * If the activity was paused when it resumes it updates the articles list.
+     *
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         initArticlesList();
     }
 
-    private void initArticlesList(){
+    /**
+     * This method loads the data from the Firebase server to the list.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void initArticlesList() {
         mDatabase.collection("articles")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -53,7 +77,9 @@ public class ArticlesList extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         ArrayList<Article> articles = new ArrayList<>();
 
-                        for(QueryDocumentSnapshot qds : queryDocumentSnapshots){ articles.add(qds.toObject(Article.class)); }
+                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                            articles.add(qds.toObject(Article.class));
+                        }
 
                         adapter = new ArticleListAdapter(ArticlesList.this, articles);
                         listArticles.setLayoutManager(new LinearLayoutManager(ArticlesList.this));

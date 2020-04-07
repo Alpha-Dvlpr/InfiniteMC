@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.alphadvlpr.infiniteminds.navigation.Login"
-    android:background="?attr/backgroundColor">
+    android:background="?attr/backgroundColor"
+    tools:context="com.alphadvlpr.infiniteminds.navigation.Login">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,14 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1"/>
+            app:layout_constraintGuide_percent="0.1" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9"/>
+            app:layout_constraintGuide_percent="0.9" />
 
         <TextView
             android:id="@+id/textView10"
@@ -74,7 +73,7 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
             app:layout_constraintStart_toStartOf="@+id/guideline9"
-            app:layout_constraintTop_toBottomOf="@+id/textView11"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <Switch
             android:id="@+id/loginShowPassword"
@@ -93,25 +92,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guideline9"
-            app:layout_constraintEnd_toEndOf="@id/guideline10"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/login_disclaimer"
-            app:layout_constraintTop_toBottomOf="@+id/loginShowPassword"
-            app:layout_constraintBottom_toTopOf="@+id/loginButton"/>
+            app:layout_constraintBottom_toTopOf="@+id/loginButton"
+            app:layout_constraintEnd_toEndOf="@id/guideline10"
+            app:layout_constraintStart_toStartOf="@id/guideline9"
+            app:layout_constraintTop_toBottomOf="@+id/loginShowPassword" />
 
         <Button
             android:id="@+id/loginChangePassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="64dp"
-            android:text="@string/change_password"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:backgroundTint="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textStyle="bold"
+            android:text="@string/change_password"
             android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -119,10 +118,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:textColor="@android:color/black"
             android:backgroundTint="@color/colorAccent"
-            android:textStyle="bold"
             android:text="@string/login"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/loginChangePassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -133,8 +132,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/loginChangePassword"
             android:backgroundTint="@color/colorAccent"
+            app:layout_constraintBottom_toTopOf="@+id/loginChangePassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -148,12 +147,12 @@
         app:fabAlignmentMode="end"
         app:hideOnScroll="true"
         app:menu="@menu/app_menu_login"
-        app:navigationIcon="@drawable/ic_home"/>
+        app:navigationIcon="@drawable/ic_home" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/loginSearchFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/loginSearchFAB"
         android:src="@drawable/ic_search"
         app:backgroundTint="@color/blueLight"
         app:layout_anchor="@id/loginBottomAppBar"

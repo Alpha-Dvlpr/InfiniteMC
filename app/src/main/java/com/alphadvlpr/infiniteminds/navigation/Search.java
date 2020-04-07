@@ -32,7 +32,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Search extends AppCompatActivity {
 
@@ -41,10 +40,18 @@ public class Search extends AppCompatActivity {
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private ArrayList<Article> dataSearchList;
     private BottomAppBar mainBar;
-    private ActionMenuItemView itemUsers, itemTrending, itemInfo;
+    private ActionMenuItemView itemUsers;
+    private ActionMenuItemView itemTrending;
+    private ActionMenuItemView itemInfo;
     private EditText searchEditText;
     private ChipGroup listChips;
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,22 +72,32 @@ public class Search extends AppCompatActivity {
         Intent prev = getIntent();
         String prevCategory = prev.getStringExtra("category");
 
-        if(prevCategory != null){
+        if (prevCategory != null) {
             searchByChip(prevCategory.toLowerCase());
             searchEditText.setText(prevCategory.toUpperCase());
         }
     }
 
-    private void setActions(){
+    /**
+     * This method sets the actions for the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String[] splitQuery = StringProcessor.removeSpecial(StringProcessor.removeAccents(query)).toLowerCase().split(" ");
                 ArrayList<String> keywords = new ArrayList<>();
-                for(String s : splitQuery) { if(!s.equals("")) { keywords.add(s); } }
+                for (String s : splitQuery) {
+                    if (!s.equals("")) {
+                        keywords.add(s);
+                    }
+                }
 
-                if(splitQuery.length >= 10){ makeToast("MAXIMUM 10 WORDS"); }
-                else{
+                if (splitQuery.length >= 10) {
+                    makeToast("MAXIMUM 10 WORDS");
+                } else {
                     searchByName(keywords);
                     searchByCategory(keywords);
                 }
@@ -127,7 +144,12 @@ public class Search extends AppCompatActivity {
         });
     }
 
-    private void initFavCategoriesList(){
+    /**
+     * This method loads the data from the Firebase server to the list.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void initFavCategoriesList() {
         searchEditText.setTextColor(Color.BLACK);
         searchEditText.setHintTextColor(Color.DKGRAY);
 
@@ -137,12 +159,12 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(QueryDocumentSnapshot qds : queryDocumentSnapshots){
+                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
                             Category aux = qds.toObject(Category.class);
                             final Chip chip = new Chip(Search.this);
 
-                            LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            layoutParams.setMargins(5,5,5,5);
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(5, 5, 5, 5);
 
                             chip.setLayoutParams(layoutParams);
                             chip.setText(aux.getName().toUpperCase());
@@ -162,7 +184,15 @@ public class Search extends AppCompatActivity {
                 });
     }
 
-    private void searchByName(final ArrayList<String> s){
+    /**
+     * This method search for articles by its name.
+     *
+     * @param s A String ArrayList containing all the words from the query which will be used to
+     *          fetch all the articles from Firebase that contain one or more of those on its
+     *          keywords array.
+     * @author AlphaDvlpr.
+     */
+    protected void searchByName(final ArrayList<String> s) {
         mDatabase.collection("articles")
                 .whereArrayContainsAny("keywords", s)
                 .orderBy("title", Query.Direction.ASCENDING)
@@ -170,14 +200,17 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){ makeToast("NO ARTICLES FOUND"); }
-                        else{
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            makeToast("NO ARTICLES FOUND");
+                        } else {
                             dataSearchList = new ArrayList<>();
 
-                            for(QueryDocumentSnapshot qds : queryDocumentSnapshots){
+                            for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
                                 Article entry = qds.toObject(Article.class);
 
-                                if(!checkExist(entry)){ dataSearchList.add(entry); }
+                                if (!checkExist(entry)) {
+                                    dataSearchList.add(entry);
+                                }
                             }
 
                             ArticleAdapter adapter = new ArticleAdapter(Search.this, dataSearchList);
@@ -188,11 +221,21 @@ public class Search extends AppCompatActivity {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) { Log.d("SEARCH_ERROR", "onFailure: " + e.getMessage()); }
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("SEARCH_ERROR", "onFailure: " + e.getMessage());
+                    }
                 });
     }
 
-    private void searchByCategory(final ArrayList<String> s){
+    /**
+     * This method search for articles by its categories.
+     *
+     * @param s A String ArrayList containing all the words from the query which will be used to
+     *          fetch all the articles from Firebase that contain one or more of those on its
+     *          categories array.
+     * @author AlphaDvlpr.
+     */
+    protected void searchByCategory(final ArrayList<String> s) {
         mDatabase.collection("articles")
                 .whereArrayContainsAny("categories", s)
                 .orderBy("title", Query.Direction.ASCENDING)
@@ -200,14 +243,17 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){ makeToast("NO CATEGORIES FOUND"); }
-                        else{
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            makeToast("NO CATEGORIES FOUND");
+                        } else {
                             dataSearchList = new ArrayList<>();
 
-                            for(QueryDocumentSnapshot qds : queryDocumentSnapshots){
+                            for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
                                 Article entry = qds.toObject(Article.class);
 
-                                if(!checkExist(entry)){ dataSearchList.add(entry); }
+                                if (!checkExist(entry)) {
+                                    dataSearchList.add(entry);
+                                }
                             }
 
                             ArticleAdapter adapter = new ArticleAdapter(Search.this, dataSearchList);
@@ -218,11 +264,20 @@ public class Search extends AppCompatActivity {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) { Log.d("CATEGORY_ERROR", "onFailure: " + e.getMessage()); }
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("CATEGORY_ERROR", "onFailure: " + e.getMessage());
+                    }
                 });
     }
 
-    private void searchByChip(final String s){
+    /**
+     * This method search for articles that match a category given by a clicked chip.
+     *
+     * @param s A String which will be used to fetch all the articles from Firebase that contain
+     *          contain that category on its categories array.
+     * @author AlphaDvlpr.
+     */
+    protected void searchByChip(final String s) {
         mDatabase.collection("articles")
                 .whereArrayContains("categories", s)
                 .orderBy("title", Query.Direction.ASCENDING)
@@ -230,11 +285,14 @@ public class Search extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots.isEmpty()){ makeToast("THERE ARE NO ARTICLES WITH '" + s + "' CATEGORY"); }
-                        else{
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            makeToast("THERE ARE NO ARTICLES WITH '" + s + "' CATEGORY");
+                        } else {
                             dataSearchList = new ArrayList<>();
 
-                            for(QueryDocumentSnapshot qds : queryDocumentSnapshots){ dataSearchList.add(qds.toObject(Article.class)); }
+                            for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                                dataSearchList.add(qds.toObject(Article.class));
+                            }
 
                             ArticleAdapter adapter = new ArticleAdapter(Search.this, dataSearchList);
                             listSearch.setLayoutManager(new LinearLayoutManager(Search.this));
@@ -244,15 +302,40 @@ public class Search extends AppCompatActivity {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) { Log.d("CHIP_ERROR", "onFailure: " + e.getMessage()); }
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("CHIP_ERROR", "onFailure: " + e.getMessage());
+                    }
                 });
     }
 
-    private boolean checkExist(Article actual){
-        for(int i = 0; i < dataSearchList.size(); i++){ if(dataSearchList.get(i).getTitle().equals(actual.getTitle())){ return true; } }
+    /**
+     * This method checks if the ArrayList contains an Article or not. This is used for preventing
+     * duplicate articles on the list because when a search is made the app checks by name and by
+     * category at the same time, so an article may match two or more times depending on the number
+     * of words that the query contains.
+     *
+     * @param actual The Article which is going to be checked.
+     * @return Returns <code>TRUE</code> if the ArrayList contains the given Article and returns
+     * <code>FALSE</code> if not.
+     * @author AlphaDvlpr.
+     */
+    protected boolean checkExist(Article actual) {
+        for (int i = 0; i < dataSearchList.size(); i++) {
+            if (dataSearchList.get(i).getTitle().equals(actual.getTitle())) {
+                return true;
+            }
+        }
 
         return false;
     }
 
-    private void makeToast(String msg){ Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    protected void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 }

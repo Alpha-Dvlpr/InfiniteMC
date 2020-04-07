@@ -24,6 +24,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class manages the Home view.
+ *
+ * @author AlphaDvlpr.
+ */
 public class Home extends AppCompatActivity {
 
     private FloatingActionButton fabSearch;
@@ -33,6 +38,12 @@ public class Home extends AppCompatActivity {
     private RecyclerView listMain;
     private SwipeRefreshLayout swipeMainArticles;
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +62,17 @@ public class Home extends AppCompatActivity {
         setActions();
     }
 
-    private void setActions(){
+    /**
+     * This method sets the actions for the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         swipeMainArticles.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() { initMainList(); }
+            public void onRefresh() {
+                initMainList();
+            }
         });
 
         fabSearch.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +108,12 @@ public class Home extends AppCompatActivity {
         });
     }
 
-    private void initMainList() {
+    /**
+     * This method loads the data from the Firebase server to the list.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void initMainList() {
         collectionReference
                 .orderBy("date", Query.Direction.DESCENDING)
                 .get()
@@ -99,7 +122,9 @@ public class Home extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         ArrayList<Article> dataMainList = new ArrayList<>();
 
-                        for(QueryDocumentSnapshot qds : queryDocumentSnapshots){ dataMainList.add(qds.toObject(Article.class)); }
+                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                            dataMainList.add(qds.toObject(Article.class));
+                        }
 
                         listMain.setLayoutManager(new LinearLayoutManager(Home.this));
                         ArticleAdapter adapter = new ArticleAdapter(Home.this, dataMainList);

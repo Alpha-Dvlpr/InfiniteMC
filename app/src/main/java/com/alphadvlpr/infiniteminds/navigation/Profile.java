@@ -1,5 +1,6 @@
 package com.alphadvlpr.infiniteminds.navigation;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,35 +32,62 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
+/**
+ * This class manages the Profile view.
+ *
+ * @author AlphaDvlpr.
+ */
 public class Profile extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseUser user;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
+    private Button buttonChangePassword;
+    private Button buttonChangeNickname;
+    private Button buttonDeleteAccount;
+    private Button buttonChangeEmail;
+    private EditText editNewNick;
+    private EditText editNewMail;
+    private EditText editConfirmNewMail;
+    private Intent prev;
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
 
-        final EditText editNewNick = findViewById(R.id.profileNewNickname),
-                editNewMail = findViewById(R.id.profileNewEmail),
-                editConfirmNewMail = findViewById(R.id.profileNewEmailConfirm);
-        Button buttonChangePassword = findViewById(R.id.profileChangePassword),
-                buttonChangeNickname = findViewById(R.id.profileChangeNickname),
-                buttonChangeEmail = findViewById(R.id.profileChangeEmail),
-                buttonDeleteAccount = findViewById(R.id.profileDeleteAccount);
-        TextView published = findViewById(R.id.profilePublished),
-                current = findViewById(R.id.pcu);
-
+        TextView published = findViewById(R.id.profilePublished);
+        TextView current = findViewById(R.id.pcu);
+        editNewNick = findViewById(R.id.profileNewNickname);
+        editNewMail = findViewById(R.id.profileNewEmail);
+        editConfirmNewMail = findViewById(R.id.profileNewEmailConfirm);
+        buttonChangePassword = findViewById(R.id.profileChangePassword);
+        buttonChangeNickname = findViewById(R.id.profileChangeNickname);
+        buttonChangeEmail = findViewById(R.id.profileChangeEmail);
+        buttonDeleteAccount = findViewById(R.id.profileDeleteAccount);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-
-        final Intent prev = getIntent();
+        prev = getIntent();
 
         published.setText("Published articles: " + prev.getLongExtra("published", -1L));
         current.setText("CURRENT USER\n" + prev.getStringExtra("email"));
 
+        setActions();
+    }
+
+    /**
+     * This method sets the actions for the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         buttonChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,12 +96,13 @@ public class Profile extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     makeToast("EMAIL SENT TO '" + user.getEmail() + "'");
                                     auth.signOut();
                                     finish();
+                                } else {
+                                    makeToast("COULD NOT SEND EMAIL");
                                 }
-                                else{ makeToast("COULD NOT SEND EMAIL"); }
                             }
                         });
             }
@@ -84,8 +113,9 @@ public class Profile extends AppCompatActivity {
             public void onClick(View v) {
                 String newNickname = editNewNick.getText().toString();
 
-                if(newNickname.isEmpty()){ makeToast("YOU MUST TYPE A NICKNAME"); }
-                else{
+                if (newNickname.isEmpty()) {
+                    makeToast("YOU MUST TYPE A NICKNAME");
+                } else {
                     mDatabase
                             .collection("users")
                             .document(Objects.requireNonNull(prev.getStringExtra("email")))
@@ -101,7 +131,9 @@ public class Profile extends AppCompatActivity {
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE UPDATING THE NICKNAME"); }
+                                public void onFailure(@NonNull Exception e) {
+                                    makeToast("ERROR WHILE UPDATING THE NICKNAME");
+                                }
                             });
                 }
             }
@@ -113,20 +145,24 @@ public class Profile extends AppCompatActivity {
                 final String newMail = editNewMail.getText().toString();
                 final String confirmEmail = editConfirmNewMail.getText().toString();
 
-                if(newMail.isEmpty() || confirmEmail.isEmpty()){ makeToast("YOU MUST TYPE AN EMAIL"); }
-                else if(!newMail.equals(confirmEmail)){ makeToast("EMAILS DOES NOT MATCH"); }
-                else{
+                if (newMail.isEmpty() || confirmEmail.isEmpty()) {
+                    makeToast("YOU MUST TYPE AN EMAIL");
+                } else if (!newMail.equals(confirmEmail)) {
+                    makeToast("EMAILS DOES NOT MATCH");
+                } else {
                     user.updateEmail(newMail)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
+                                    if (task.isSuccessful()) {
                                         makeToast("EMAIL CHANGED TO '" + newMail + "'");
                                         editNewMail.setText("");
                                         editConfirmNewMail.setText("");
                                         FirebaseAuth.getInstance().signOut();
                                         finish();
-                                    } else{ makeToast("COULD NOT CHANGE EMAIL"); }
+                                    } else {
+                                        makeToast("COULD NOT CHANGE EMAIL");
+                                    }
                                 }
                             });
                 }
@@ -153,8 +189,11 @@ public class Profile extends AppCompatActivity {
                 showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) { password.setTransformationMethod(HideReturnsTransformationMethod.getInstance()); }
-                        else { password.setTransformationMethod(PasswordTransformationMethod.getInstance()); }
+                        if (isChecked) {
+                            password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        } else {
+                            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        }
                     }
                 });
 
@@ -169,7 +208,9 @@ public class Profile extends AppCompatActivity {
                         .setPositiveButton("DELETE", null)
                         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
                         })
                         .create();
 
@@ -184,8 +225,9 @@ public class Profile extends AppCompatActivity {
                                 final String mail = email.getText().toString();
                                 String pass = password.getText().toString();
 
-                                if (mail.isEmpty() || pass.isEmpty()) { makeToast("BOTH FIELDS ARE NEEDED"); }
-                                else {
+                                if (mail.isEmpty() || pass.isEmpty()) {
+                                    makeToast("BOTH FIELDS ARE NEEDED");
+                                } else {
                                     final FirebaseUser current = FirebaseAuth.getInstance().getCurrentUser();
                                     AuthCredential credential = EmailAuthProvider.getCredential(mail, pass);
 
@@ -214,16 +256,22 @@ public class Profile extends AppCompatActivity {
                                                                                             toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                                                             startActivity(toHome);
                                                                                             finish();
-                                                                                        } else { makeToast("ERROR WHILE DELETING THE ACCOUNT"); }
+                                                                                        } else {
+                                                                                            makeToast("ERROR WHILE DELETING THE ACCOUNT");
+                                                                                        }
                                                                                     }
                                                                                 });
                                                                     }
                                                                 })
                                                                 .addOnFailureListener(new OnFailureListener() {
                                                                     @Override
-                                                                    public void onFailure(@NonNull Exception e) { makeToast("COULD NOT DELETE DATA FROM SERVER"); }
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        makeToast("COULD NOT DELETE DATA FROM SERVER");
+                                                                    }
                                                                 });
-                                                    } else { makeToast("ERROR WHILE LOGGING IN"); }
+                                                    } else {
+                                                        makeToast("ERROR WHILE LOGGING IN");
+                                                    }
                                                 }
                                             });
                                 }
@@ -236,5 +284,13 @@ public class Profile extends AppCompatActivity {
         });
     }
 
-    private void makeToast(String msg){ Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); }
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    protected void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
 }

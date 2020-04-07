@@ -24,16 +24,28 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class manages the Trending view.
+ *
+ * @author AlphaDvlpr.
+ */
 public class Trending extends AppCompatActivity {
 
     private FloatingActionButton fabSearch;
     private BottomAppBar mainBar;
     private RecyclerView listFav;
     private SwipeRefreshLayout swipeTrendingArticles;
-    private ActionMenuItemView itemUsers, itemInfo;
+    private ActionMenuItemView itemUsers;
+    private ActionMenuItemView itemInfo;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = mDatabase.collection("articles");
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +62,12 @@ public class Trending extends AppCompatActivity {
         setActions();
     }
 
-    private void initFavList(){
+    /**
+     * This method loads the data from the Firebase server to the list.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void initFavList() {
         collectionReference
                 .whereGreaterThan("visits", 0)
                 .orderBy("visits", Query.Direction.DESCENDING)
@@ -60,7 +77,9 @@ public class Trending extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         ArrayList<Article> dataFavList = new ArrayList<>();
 
-                        for(QueryDocumentSnapshot qds : queryDocumentSnapshots){ dataFavList.add(qds.toObject(Article.class)); }
+                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                            dataFavList.add(qds.toObject(Article.class));
+                        }
 
                         ArticleAdapter adapter = new ArticleAdapter(Trending.this, dataFavList);
                         listFav.setLayoutManager(new LinearLayoutManager(Trending.this));
@@ -71,10 +90,17 @@ public class Trending extends AppCompatActivity {
         swipeTrendingArticles.setRefreshing(false);
     }
 
-    private void setActions(){
+    /**
+     * This method sets the actions for the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         swipeTrendingArticles.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() { initFavList(); }
+            public void onRefresh() {
+                initFavList();
+            }
         });
 
         fabSearch.setOnClickListener(new View.OnClickListener() {

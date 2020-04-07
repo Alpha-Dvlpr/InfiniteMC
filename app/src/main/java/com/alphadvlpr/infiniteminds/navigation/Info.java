@@ -14,6 +14,11 @@ import com.alphadvlpr.infiniteminds.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * This class manages the Info view.
+ *
+ * @author AlphaDvlpr.
+ */
 public class Info extends AppCompatActivity {
 
     private Button report, contact, share, privacy;
@@ -21,6 +26,12 @@ public class Info extends AppCompatActivity {
     private FloatingActionButton fabSearch;
     private ActionMenuItemView itemUsers, itemTrending;
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +49,12 @@ public class Info extends AppCompatActivity {
         setActions();
     }
 
-    private void setActions(){
+    /**
+     * This method sets the actions for the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    private void setActions() {
         itemTrending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,8 +104,11 @@ public class Info extends AppCompatActivity {
                                 "HAPPENED DOING: \n" +
                                 "CAN IT BE EASILY FORCED TO HAPPEN?: ");
 
-                try { startActivity(Intent.createChooser(emailIntent, "REPORT BUGS")); }
-                catch (android.content.ActivityNotFoundException ex) { makeToast("ERROR WHILE DOING THE ACTION"); }
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "REPORT BUGS"));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    makeToast("ERROR WHILE DOING THE ACTION");
+                }
             }
         });
 
@@ -107,7 +126,9 @@ public class Info extends AppCompatActivity {
 
         privacy.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://teaminfiniteminds.wixsite.com/website/blog/organiza-tu-equipo-de-la-manera-más-óptima"))); }
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://teaminfiniteminds.wixsite.com/website/blog/organiza-tu-equipo-de-la-manera-más-óptima")));
+            }
         });
 
         contact.setOnClickListener(new View.OnClickListener() {
@@ -120,13 +141,24 @@ public class Info extends AppCompatActivity {
                 emailIntent.setType("text/plain");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "INFORMATION ABOUT ADDON-MODS FOR MCPE");
-                emailIntent.putExtra(Intent.EXTRA_TEXT,"*** TYPE HERE YOUR MESSAGE ***");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "*** TYPE HERE YOUR MESSAGE ***");
 
-                try { startActivity(Intent.createChooser(emailIntent, "SEND EMAIL")); }
-                catch (android.content.ActivityNotFoundException ex) { makeToast("ERROR WHILE DOING THE ACTION"); }
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "SEND EMAIL"));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    makeToast("ERROR WHILE DOING THE ACTION");
+                }
             }
         });
     }
 
-    private void makeToast(String msg){ Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    protected void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 }

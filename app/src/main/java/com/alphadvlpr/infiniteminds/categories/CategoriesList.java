@@ -28,6 +28,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class manages the categories list inside the registered user's interface.
+ *
+ * @author AlphaDvlpr
+ */
 public class CategoriesList extends AppCompatActivity {
 
     private FloatingActionButton fab;
@@ -36,6 +41,32 @@ public class CategoriesList extends AppCompatActivity {
     private RecyclerView categoriesList;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
 
+    /**
+     * The right-to-left and left-to-right swipe delete gesture for the RecyclerView.
+     */
+    protected ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            Category aux = categories.get(viewHolder.getAdapterPosition());
+
+            categories.remove(aux);
+            adapter.notifyDataSetChanged();
+
+            mDatabase.collection("categories").document(aux.getName().toLowerCase()).delete();
+        }
+    };
+
+    /**
+     * The main function that executes when the view loads for the first time.
+     *
+     * @param savedInstanceState The previous state of the current activity if saved.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +79,12 @@ public class CategoriesList extends AppCompatActivity {
         initCategoriesList();
     }
 
-    private void setActions(){
+    /**
+     * Method that sets the actions for the buttons inside this view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +104,9 @@ public class CategoriesList extends AppCompatActivity {
                         .setPositiveButton("ADD", null)
                         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
                         })
                         .create();
 
@@ -82,8 +120,9 @@ public class CategoriesList extends AppCompatActivity {
                             public void onClick(View v) {
                                 String name = StringProcessor.removeAccents(categoryName.getText().toString());
 
-                                if(name.isEmpty()){ makeToast("YOU MUST TYPE A NAME"); }
-                                else{
+                                if (name.isEmpty()) {
+                                    makeToast("YOU MUST TYPE A NAME");
+                                } else {
                                     mDatabase.collection("categories").document(name.toLowerCase())
                                             .set(new Category(name.toLowerCase()))
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -95,7 +134,9 @@ public class CategoriesList extends AppCompatActivity {
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
-                                                public void onFailure(@NonNull Exception e) { makeToast("ERROR WHILE ADDING THE CATEGORY"); }
+                                                public void onFailure(@NonNull Exception e) {
+                                                    makeToast("ERROR WHILE ADDING THE CATEGORY");
+                                                }
                                             });
                                     dialog.dismiss();
                                 }
@@ -108,7 +149,13 @@ public class CategoriesList extends AppCompatActivity {
         });
     }
 
-    private void initCategoriesList(){
+    /**
+     * Method that connects to the Firebase database for fetching all the data which collection is
+     * 'categories' and then it loads the information to the RecyclerView.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void initCategoriesList() {
         mDatabase.collection("categories")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -116,7 +163,9 @@ public class CategoriesList extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         categories = new ArrayList<>();
 
-                        for(QueryDocumentSnapshot qds : queryDocumentSnapshots){ categories.add(qds.toObject(Category.class)); }
+                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                            categories.add(qds.toObject(Category.class));
+                        }
 
                         categoriesList.setLayoutManager(new LinearLayoutManager(CategoriesList.this));
                         adapter = new CategoryListAdapter(CategoriesList.this, categories);
@@ -126,20 +175,13 @@ public class CategoriesList extends AppCompatActivity {
                 });
     }
 
-    private void makeToast(String msg){ Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) { return false; }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            Category aux = categories.get(viewHolder.getAdapterPosition());
-
-            categories.remove(aux);
-            adapter.notifyDataSetChanged();
-
-            mDatabase.collection("categories").document(aux.getName().toLowerCase()).delete();
-        }
-    };
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    protected void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -31,6 +31,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
+/**
+ * This class manages the Login view.
+ *
+ * @author AlphaDvlpr.
+ */
 public class Login extends AppCompatActivity {
 
     private EditText etUser, etPassword;
@@ -40,16 +45,25 @@ public class Login extends AppCompatActivity {
     private BottomAppBar loginBar;
     private FloatingActionButton fabSearch;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
+    private Button login;
+    private Button changePassword;
+    private Switch switchShowPassword;
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.login);
 
-        final Button login = findViewById(R.id.loginButton),
-                changePassword = findViewById(R.id.loginChangePassword);
-        Switch switchShowPassword = findViewById(R.id.loginShowPassword);
+        login = findViewById(R.id.loginButton);
+        changePassword = findViewById(R.id.loginChangePassword);
+        switchShowPassword = findViewById(R.id.loginShowPassword);
         etUser = findViewById(R.id.loginEmail);
         etPassword = findViewById(R.id.loginPassword);
         progressBar = findViewById(R.id.progressBar);
@@ -57,77 +71,21 @@ public class Login extends AppCompatActivity {
         itemInfo = findViewById(R.id.menuAbout);
         itemTrending = findViewById(R.id.menuTrend);
         loginBar = findViewById(R.id.loginBottomAppBar);
-
-        setActions();
-
-        progressBar.setVisibility(View.GONE);
-
         auth = FirebaseAuth.getInstance();
 
-        switchShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){ etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance()); }
-                else{ etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance()); }
-            }
-        });
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                boolean errUser = false, errPass = false;
-                if (etUser.getText().toString().isEmpty()) { errUser = true; }
-
-                if (etPassword.getText().toString().isEmpty()) { errPass = true; }
-
-                if (!errPass && !errUser) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    login.setVisibility(View.GONE);
-
-                    auth.signInWithEmailAndPassword(etUser.getText().toString(), etPassword.getText().toString())
-                            .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        makeToast("WELCOME!");
-                                        passData(etUser.getText().toString(), new Intent(Login.this, MainInterface.class));
-                                    } else { makeToast("ERROR WHILE LOGGING IN!!"); }
-
-                                    etUser.setText("");
-                                    etPassword.setText("");
-                                    login.setVisibility(View.VISIBLE);
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-
-                } else if (errPass && errUser) { makeToast("BOTH FIELD ARE REQUIRED"); }
-            }
-        });
-
-
-        changePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String selectedEmail;
-
-                if(etUser.getText().toString().isEmpty()){ makeToast("YOU MUST TYPE AN EMAIL"); }
-                else{
-                    selectedEmail = etUser.getText().toString();
-                    auth = FirebaseAuth.getInstance();
-                    auth.sendPasswordResetEmail(selectedEmail)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){ makeToast("EMAIL SENT TO '" + selectedEmail + "'"); }
-                                    else{ makeToast("COULD NOT SEND EMAIL"); }
-                                }
-                            });
-                }
-            }
-        });
+        progressBar.setVisibility(View.GONE);
+        setActions();
     }
 
-    private void passData(String mail, final Intent i){
+    /**
+     * This method gets the information of the logged user and starts the new
+     * activity giving the Intent that information.
+     *
+     * @param mail The email of the logged user.
+     * @param i    The intent to add the data.
+     * @author AlphaDvlpr.
+     */
+    protected void passData(String mail, final Intent i) {
         mDatabase.collection("users")
                 .document(mail)
                 .get()
@@ -149,7 +107,12 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-    private void setActions(){
+    /**
+     * This method sets the actions for the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,9 +144,92 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
+
+        switchShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                boolean errUser = false, errPass = false;
+                if (etUser.getText().toString().isEmpty()) {
+                    errUser = true;
+                }
+
+                if (etPassword.getText().toString().isEmpty()) {
+                    errPass = true;
+                }
+
+                if (!errPass && !errUser) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    login.setVisibility(View.GONE);
+
+                    auth.signInWithEmailAndPassword(etUser.getText().toString(), etPassword.getText().toString())
+                            .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        makeToast("WELCOME!");
+                                        passData(etUser.getText().toString(), new Intent(Login.this, MainInterface.class));
+                                    } else {
+                                        makeToast("ERROR WHILE LOGGING IN!!");
+                                    }
+
+                                    etUser.setText("");
+                                    etPassword.setText("");
+                                    login.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+
+                } else if (errPass && errUser) {
+                    makeToast("BOTH FIELD ARE REQUIRED");
+                }
+            }
+        });
+
+
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String selectedEmail;
+
+                if (etUser.getText().toString().isEmpty()) {
+                    makeToast("YOU MUST TYPE AN EMAIL");
+                } else {
+                    selectedEmail = etUser.getText().toString();
+                    auth = FirebaseAuth.getInstance();
+                    auth.sendPasswordResetEmail(selectedEmail)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        makeToast("EMAIL SENT TO '" + selectedEmail + "'");
+                                    } else {
+                                        makeToast("COULD NOT SEND EMAIL");
+                                    }
+                                }
+                            });
+                }
+            }
+        });
     }
 
-    private void makeToast(String msg){
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    protected void makeToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

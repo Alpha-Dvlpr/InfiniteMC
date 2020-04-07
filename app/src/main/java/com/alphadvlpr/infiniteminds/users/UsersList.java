@@ -20,6 +20,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class manages the list of all the registered users.
+ *
+ * @author AlphaDvlpr.
+ */
 public class UsersList extends AppCompatActivity {
 
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
@@ -28,6 +33,12 @@ public class UsersList extends AppCompatActivity {
     private FloatingActionButton fabAdd;
     private String _email = "";
 
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous state of the activity if saved.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,25 +56,44 @@ public class UsersList extends AppCompatActivity {
         initUsersList(_email);
     }
 
+    /**
+     * If the activity was paused when it resumes it updates the articles list.
+     *
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         initUsersList(_email);
     }
 
-    private void setActions(final String email){
+    /**
+     * This method sets the actions for all the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions(final String email) {
         swipeEditUsers.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() { initUsersList(email); }
+            public void onRefresh() {
+                initUsersList(email);
+            }
         });
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { startActivity(new Intent(UsersList.this, NewUser.class)); }
+            public void onClick(View view) {
+                startActivity(new Intent(UsersList.this, NewUser.class));
+            }
         });
     }
 
-    private void initUsersList(final String email){
+    /**
+     * This method loads the data from the Firebase server to the list.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void initUsersList(final String email) {
         mDatabase.collection("users")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -71,10 +101,12 @@ public class UsersList extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         ArrayList<User> users = new ArrayList<>();
 
-                        for(QueryDocumentSnapshot qds : queryDocumentSnapshots){
+                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
                             User aux = qds.toObject(User.class);
 
-                            if(!aux.getEmail().equals(email)){ users.add(aux); }
+                            if (!aux.getEmail().equals(email)) {
+                                users.add(aux);
+                            }
                         }
 
                         UserListAdapter adapter = new UserListAdapter(UsersList.this, users);

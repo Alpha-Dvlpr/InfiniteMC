@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     android:orientation="vertical"
-    tools:context="com.alphadvlpr.infiniteminds.navigation.Content"
-    android:background="?attr/backgroundColor">
+    tools:context="com.alphadvlpr.infiniteminds.navigation.Content">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -110,26 +110,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:cardCornerRadius="15dp"
-                app:cardBackgroundColor="@color/blueLight"
-                android:elevation="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="8dp"
+                app:cardBackgroundColor="@color/blueLight"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.google.android.gms.ads.AdView
+                    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/contentAd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/contentAd"
-                        xmlns:ads="http://schemas.android.com/apk/res-auto"
                         ads:adSize="BANNER"
-                        ads:adUnitId="@string/adTest"/>
+                        ads:adUnitId="@string/adTest" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -204,11 +203,10 @@
 
                     <LinearLayout
                         android:id="@+id/otherImagesContainer"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
-                    </LinearLayout>
+                        android:layout_margin="10dp"
+                        android:orientation="vertical"></LinearLayout>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/otherLinksContainer"

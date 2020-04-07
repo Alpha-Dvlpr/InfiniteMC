@@ -40,45 +40,101 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * This class manages the option to edit articles from the User's interface.
+ *
+ * @author AlphaDvlpr
+ */
 public class EditArticle extends AppCompatActivity {
 
-    private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private static final int SELECT_FILE = 1;
+    private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private ArrayList<Image> images = new ArrayList<>();
     private RecyclerView imagesList;
     private String reference = "";
     private ImageListAdapter adapter;
 
+    /**
+     * The swipe to delete lef-to-right or right-to-left gesture to the RecyclerView.
+     */
+    protected ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            images.remove(viewHolder.getAdapterPosition());
+            adapter.notifyDataSetChanged();
+        }
+    };
+
+    private Button buttonUpdate;
+    private Button buttonDelete;
+    private Button buttonUploadPhoto;
+    private Button buttonCancel;
+    private EditText editCategoryOne;
+    private EditText editCategoryTwo;
+    private EditText editCategoryThree;
+    private EditText editCategoryFour;
+    private EditText editCategoryFive;
+    private EditText editCategorySix;
+    private EditText editContent;
+    private EditText editLinkOne;
+    private EditText editLinkTwo;
+    private EditText editLinkThree;
+    private EditText editLinkFour;
+    private EditText editTitle;
+    private TextView textContent;
+    private ProgressBar progressBar;
+    private Intent prev;
+
+    /**
+     * This method initializes all the views on this Activity.
+     *
+     * @param savedInstanceState The previous saved state of the activity.
+     * @author AlphaDvlpr.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.edit_article);
 
-        final EditText editCategoryOne = findViewById(R.id.editArticleCategoryOne),
-                editCategoryTwo = findViewById(R.id.editArticleCategoryTwo),
-                editCategoryThree = findViewById(R.id.editArticleCategoryThree),
-                editCategoryFour = findViewById(R.id.editArticleCategoryFour),
-                editCategoryFive = findViewById(R.id.editArticleCategoryFive),
-                editCategorySix = findViewById(R.id.editArticleCategorySix),
-                editContent = findViewById(R.id.editArticleContent),
-                editLinkOne = findViewById(R.id.editArticleDownloadOne),
-                editLinkTwo = findViewById(R.id.editArticleDownloadTwo),
-                editLinkThree = findViewById(R.id.editArticleDownloadThree),
-                editLinkFour = findViewById(R.id.editArticleDownloadFour),
-                editTitle = findViewById(R.id.editArticleTitle);
-        final TextView textContent = findViewById(R.id.eac);
-        final Button buttonUpdate = findViewById(R.id.editArticleUpdateButton),
-                buttonCancel = findViewById(R.id.editArticleCancelButton),
-                buttonDelete = findViewById(R.id.editArticleDeleteArticle),
-                buttonUploadPhoto = findViewById(R.id.editArticleTakePicture);
+        editCategoryOne = findViewById(R.id.editArticleCategoryOne);
+        editCategoryTwo = findViewById(R.id.editArticleCategoryTwo);
+        editCategoryThree = findViewById(R.id.editArticleCategoryThree);
+        editCategoryFour = findViewById(R.id.editArticleCategoryFour);
+        editCategoryFive = findViewById(R.id.editArticleCategoryFive);
+        editCategorySix = findViewById(R.id.editArticleCategorySix);
+        editContent = findViewById(R.id.editArticleContent);
+        editLinkOne = findViewById(R.id.editArticleDownloadOne);
+        editLinkTwo = findViewById(R.id.editArticleDownloadTwo);
+        editLinkThree = findViewById(R.id.editArticleDownloadThree);
+        editLinkFour = findViewById(R.id.editArticleDownloadFour);
+        editTitle = findViewById(R.id.editArticleTitle);
+        textContent = findViewById(R.id.eac);
+        buttonUpdate = findViewById(R.id.editArticleUpdateButton);
+        buttonCancel = findViewById(R.id.editArticleCancelButton);
+        buttonDelete = findViewById(R.id.editArticleDeleteArticle);
+        buttonUploadPhoto = findViewById(R.id.editArticleTakePicture);
         imagesList = findViewById(R.id.editArticleImagesList);
-        final ProgressBar progressBar = findViewById(R.id.editArticleProgress);
+        progressBar = findViewById(R.id.editArticleProgress);
+        prev = getIntent();
 
         progressBar.setVisibility(View.GONE);
 
-        final Intent prev = getIntent();
+        setInformationToView();
+        setActions();
+    }
 
+    /**
+     * This method gets the information from the intent and displays it on the correct view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setInformationToView() {
         ArrayList<String> imagesStringBitmap = prev.getStringArrayListExtra("images"),
                 oldCategories = prev.getStringArrayListExtra("categories"),
                 oldDownloadLinks = prev.getStringArrayListExtra("downloadURL");
@@ -86,9 +142,13 @@ public class EditArticle extends AppCompatActivity {
         editTitle.setText(prev.getStringExtra("title"));
         editContent.setText(prev.getStringExtra("content"));
 
-        for(String key : Objects.requireNonNull(prev.getStringArrayListExtra("keywords"))){ reference += "_" + key; }
+        for (String key : Objects.requireNonNull(prev.getStringArrayListExtra("keywords"))) {
+            reference += "_" + key;
+        }
 
-        for(String s : Objects.requireNonNull(imagesStringBitmap)){ images.add(new Image(s)); }
+        for (String s : Objects.requireNonNull(imagesStringBitmap)) {
+            images.add(new Image(s));
+        }
 
         imagesList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ImageListAdapter(images);
@@ -108,10 +168,19 @@ public class EditArticle extends AppCompatActivity {
         editCategoryFour.setText(oldCategories.get(3));
         editCategoryFive.setText(oldCategories.get(4));
         editCategorySix.setText(oldCategories.get(5));
+    }
 
+    /**
+     * This method sets the actions for all the buttons of the view.
+     *
+     * @author AlphaDvlpr.
+     */
+    protected void setActions() {
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { finish(); }
+            public void onClick(View v) {
+                finish();
+            }
         });
 
         buttonDelete.setOnClickListener(new View.OnClickListener() {
@@ -126,10 +195,12 @@ public class EditArticle extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             makeToast("DOCUMENT DELETED SUCCESSFULLY");
                                             finish();
-                                        } else{ makeToast("COULD NOT DELETE THE ARTICLE"); }
+                                        } else {
+                                            makeToast("COULD NOT DELETE THE ARTICLE");
+                                        }
                                     }
                                 });
                     }
@@ -140,9 +211,10 @@ public class EditArticle extends AppCompatActivity {
         buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(images.size() == 2){ makeToast("Maximum 2 images per article"); }
-                else{
-                    String[] types = {"image/jpg", "image/jpeg"};
+                if (images.size() == 2) {
+                    makeToast("Maximum 2 images per article");
+                } else {
+                    String[] types = {"image/jpg", "image/jpeg", "image/*"};
 
                     Intent camera = new Intent();
                     camera.setType("image/*");
@@ -158,10 +230,13 @@ public class EditArticle extends AppCompatActivity {
             public void onClick(View v) {
                 String newContent = editContent.getText().toString();
 
-                if(newContent.isEmpty()){ textContent.setTextColor(Color.RED); }
-                else{ textContent.setTextColor(Color.BLACK); }
+                if (newContent.isEmpty()) {
+                    textContent.setTextColor(Color.RED);
+                } else {
+                    textContent.setTextColor(Color.BLACK);
+                }
 
-                ArrayList<String>newDownloadURL = new ArrayList<>();
+                ArrayList<String> newDownloadURL = new ArrayList<>();
                 newDownloadURL.add(StringProcessor.checkAndFixLink(editLinkOne.getText().toString()));
                 newDownloadURL.add(StringProcessor.checkAndFixLink(editLinkTwo.getText().toString()));
                 newDownloadURL.add(StringProcessor.checkAndFixLink(editLinkThree.getText().toString()));
@@ -176,10 +251,13 @@ public class EditArticle extends AppCompatActivity {
                 newCategories.add(StringProcessor.removeSpecial(StringProcessor.removeAccents(editCategorySix.getText().toString().toLowerCase())));
 
                 ArrayList<String> newImagesStringBitmap = new ArrayList<>();
-                for(Image i : images){ newImagesStringBitmap.add(i.getStringBitmap()); }
+                for (Image i : images) {
+                    newImagesStringBitmap.add(i.getStringBitmap());
+                }
 
-                if(newContent.isEmpty()){ makeToast("Fields with '*' are required"); }
-                else{
+                if (newContent.isEmpty()) {
+                    makeToast("Fields with '*' are required");
+                } else {
                     buttonUpdate.setVisibility(View.GONE);
                     buttonCancel.setVisibility(View.GONE);
                     buttonDelete.setVisibility(View.GONE);
@@ -216,8 +294,17 @@ public class EditArticle extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method prompts the user a gallery image selector for taking one picture, showing it on
+     * the ImageView and converting it to a String Bitmap Image custom Object.
+     *
+     * @param requestCode         The code of the request. It is given automatically.
+     * @param resultCode          The result code of the operation. It is given automatically.
+     * @param imageReturnedIntent The image that is selected by the user.
+     * @author AlphaDvlpr.
+     */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent imageReturnedIntent){
+    protected void onActivityResult(int requestCode, int resultCode, final Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         Uri selectedImage;
@@ -230,8 +317,11 @@ public class EditArticle extends AppCompatActivity {
                 if (requestCode == SELECT_FILE && selectedPath != null) {
                     InputStream imageStream = null;
 
-                    try { imageStream = getContentResolver().openInputStream(selectedImage); }
-                    catch (FileNotFoundException e) { e.printStackTrace(); }
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
                     Bitmap bmp = BitmapFactory.decodeStream(imageStream);
                     Bitmap scaled = ImageDecoder.getScaledBitmap(bmp, 480, 360);
@@ -247,16 +337,13 @@ public class EditArticle extends AppCompatActivity {
         imagesList.setAdapter(adapter);
     }
 
-    private void makeToast(String msg){ Toast.makeText(this, msg, Toast.LENGTH_SHORT).show(); }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) { return false; }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            images.remove(viewHolder.getAdapterPosition());
-            adapter.notifyDataSetChanged();
-        }
-    };
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    protected void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 }
