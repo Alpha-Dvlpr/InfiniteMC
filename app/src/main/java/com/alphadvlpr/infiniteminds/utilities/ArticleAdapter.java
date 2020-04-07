@@ -33,7 +33,7 @@ import java.util.Objects;
  */
 public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int LIST_AD_DELTA = 5;
+    private static final int LIST_AD_DELTA = 10;
     private static final int CONTENT = 0;
     private static final int AD = 1;
     private List<Article> articles;

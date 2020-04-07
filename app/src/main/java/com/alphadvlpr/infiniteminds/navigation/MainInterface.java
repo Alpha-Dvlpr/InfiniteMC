@@ -93,7 +93,7 @@ public class MainInterface extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 makeToast("WISH TO SEE YOU SOON!");
 
-                Intent intent = new Intent(MainInterface.this, Login.class);
+                Intent intent = new Intent(MainInterface.this, UsersFragment.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -154,7 +154,7 @@ public class MainInterface extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(MainInterface.this, Home.class));
+        startActivity(new Intent(MainInterface.this, MainActivity.class));
         finish();
     }
 

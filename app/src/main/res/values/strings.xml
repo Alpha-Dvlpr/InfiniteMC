@@ -11,7 +11,7 @@
     <string name="content_server_3">OPTION 3</string>
     <string name="content_server_4">OPTION 4</string>
     <string name="content_additional_links">OTHER DOWNLOAD LINKS</string>
-    <string name="visits_counter">Visits: </string>
+    <string name="visits_counter">VISITS: </string>
     <string name="lorem">Lorem ipsum dolor sit amet.</string>
 
     <!-- INFO -->
@@ -83,6 +83,11 @@
     <string name="login_disclaimer">THIS MENU IS ONLY FOR FAIAM NA TEAM MEMBERS</string>
 
     <!-- APP BAR MENU -->
+    <string name="home">HOME</string>
     <string name="trending">TRENDING</string>
     <string name="info">INFO</string>
+    <string name="search">SEARCH</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

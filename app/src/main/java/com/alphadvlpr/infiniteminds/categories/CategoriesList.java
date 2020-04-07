@@ -168,7 +168,7 @@ public class CategoriesList extends AppCompatActivity {
                         }
 
                         categoriesList.setLayoutManager(new LinearLayoutManager(CategoriesList.this));
-                        adapter = new CategoryListAdapter(CategoriesList.this, categories);
+                        adapter = new CategoryListAdapter(categories);
                         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(categoriesList);
                         categoriesList.setAdapter(adapter);
                     }
