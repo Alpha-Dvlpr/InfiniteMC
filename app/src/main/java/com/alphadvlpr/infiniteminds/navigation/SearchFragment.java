@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,7 @@ public class SearchFragment extends Fragment {
     private EditText searchEditText;
     private ChipGroup listChips;
     private Context context;
+    private ProgressBar progressBar;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -67,9 +69,7 @@ public class SearchFragment extends Fragment {
         searchView = view.findViewById(R.id.searchField);
         listChips = view.findViewById(R.id.searchCategoriesChipContainer);
         searchEditText = searchView.findViewById(R.id.search_src_text);
-
-        initFavCategoriesList();
-        setActions();
+        progressBar = view.findViewById(R.id.progressBar);
 
         context = getContext();
         Activity activity = getActivity();
@@ -83,6 +83,11 @@ public class SearchFragment extends Fragment {
                 searchEditText.setText(prevCategory.toUpperCase());
             }
         }
+
+        progressBar.setVisibility(View.INVISIBLE);
+
+        initFavCategoriesList();
+        setActions();
 
         return view;
     }
@@ -170,6 +175,8 @@ public class SearchFragment extends Fragment {
      * @author AlphaDvlpr.
      */
     private void searchByName(final ArrayList<String> s) {
+        progressBar.setVisibility(View.VISIBLE);
+
         mDatabase.collection("articles")
                 .whereArrayContainsAny("keywords", s)
                 .orderBy("title", Query.Direction.ASCENDING)
@@ -193,6 +200,7 @@ public class SearchFragment extends Fragment {
                             ArticleAdapter adapter = new ArticleAdapter(context, dataSearchList);
                             listSearch.setLayoutManager(new LinearLayoutManager(context));
                             listSearch.setAdapter(adapter);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 })
@@ -213,6 +221,8 @@ public class SearchFragment extends Fragment {
      * @author AlphaDvlpr.
      */
     private void searchByCategory(final ArrayList<String> s) {
+        progressBar.setVisibility(View.VISIBLE);
+
         mDatabase.collection("articles")
                 .whereArrayContainsAny("categories", s)
                 .orderBy("title", Query.Direction.ASCENDING)
@@ -236,6 +246,7 @@ public class SearchFragment extends Fragment {
                             ArticleAdapter adapter = new ArticleAdapter(context, dataSearchList);
                             listSearch.setLayoutManager(new LinearLayoutManager(context));
                             listSearch.setAdapter(adapter);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 })
@@ -255,6 +266,8 @@ public class SearchFragment extends Fragment {
      * @author AlphaDvlpr.
      */
     private void searchByChip(final String s) {
+        progressBar.setVisibility(View.VISIBLE);
+
         mDatabase.collection("articles")
                 .whereArrayContains("categories", s)
                 .orderBy("title", Query.Direction.ASCENDING)
@@ -274,6 +287,7 @@ public class SearchFragment extends Fragment {
                             ArticleAdapter adapter = new ArticleAdapter(context, dataSearchList);
                             listSearch.setLayoutManager(new LinearLayoutManager(context));
                             listSearch.setAdapter(adapter);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 })

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView listMain;
     private SwipeRefreshLayout swipeMainArticles;
     private Context context;
+    private ProgressBar progressBar;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -51,6 +53,7 @@ public class HomeFragment extends Fragment {
 
         swipeMainArticles = view.findViewById(R.id.refreshMain);
         listMain = view.findViewById(R.id.mainList);
+        progressBar = view.findViewById(R.id.progressBar);
 
         context = getContext();
 
@@ -80,6 +83,8 @@ public class HomeFragment extends Fragment {
      * @author AlphaDvlpr.
      */
     private void initMainList() {
+        progressBar.setVisibility(View.VISIBLE);
+
         collectionReference
                 .orderBy("date", Query.Direction.DESCENDING)
                 .get()
@@ -95,6 +100,7 @@ public class HomeFragment extends Fragment {
                         listMain.setLayoutManager(new LinearLayoutManager(context));
                         ArticleAdapter adapter = new ArticleAdapter(context, dataMainList);
                         listMain.setAdapter(adapter);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
 

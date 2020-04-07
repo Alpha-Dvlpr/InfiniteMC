@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ public class TrendingFragment extends Fragment {
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = mDatabase.collection("articles");
     private Context context;
+    private ProgressBar progressBar;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -51,6 +53,7 @@ public class TrendingFragment extends Fragment {
 
         swipeTrendingArticles = view.findViewById(R.id.refreshFav);
         listFav = view.findViewById(R.id.trendingList);
+        progressBar = view.findViewById(R.id.progressBar);
         context = getContext();
 
         initFavList();
@@ -65,6 +68,8 @@ public class TrendingFragment extends Fragment {
      * @author AlphaDvlpr.
      */
     private void initFavList() {
+        progressBar.setVisibility(View.VISIBLE);
+
         collectionReference
                 .whereGreaterThan("visits", 0)
                 .orderBy("visits", Query.Direction.DESCENDING)
@@ -81,6 +86,7 @@ public class TrendingFragment extends Fragment {
                         ArticleAdapter adapter = new ArticleAdapter(context, dataFavList);
                         listFav.setLayoutManager(new LinearLayoutManager(context));
                         listFav.setAdapter(adapter);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
 

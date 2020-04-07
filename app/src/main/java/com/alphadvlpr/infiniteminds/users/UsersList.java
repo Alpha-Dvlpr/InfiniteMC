@@ -3,6 +3,7 @@ package com.alphadvlpr.infiniteminds.users;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ public class UsersList extends AppCompatActivity {
     private SwipeRefreshLayout swipeEditUsers;
     private FloatingActionButton fabAdd;
     private String _email = "";
+    private ProgressBar progressBar;
 
     /**
      * This method initializes all the views on this Activity.
@@ -47,6 +49,7 @@ public class UsersList extends AppCompatActivity {
         fabAdd = findViewById(R.id.fab);
         listUsers = findViewById(R.id.listUsers);
         swipeEditUsers = findViewById(R.id.refreshUsers);
+        progressBar = findViewById(R.id.progressBar);
 
         Intent prev = getIntent();
 
@@ -94,6 +97,8 @@ public class UsersList extends AppCompatActivity {
      * @author AlphaDvlpr.
      */
     protected void initUsersList(final String email) {
+        progressBar.setVisibility(View.VISIBLE);
+
         mDatabase.collection("users")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -112,6 +117,7 @@ public class UsersList extends AppCompatActivity {
                         UserListAdapter adapter = new UserListAdapter(UsersList.this, users);
                         listUsers.setLayoutManager(new LinearLayoutManager(UsersList.this));
                         listUsers.setAdapter(adapter);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
 

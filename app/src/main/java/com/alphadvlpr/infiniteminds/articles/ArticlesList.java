@@ -1,6 +1,8 @@
 package com.alphadvlpr.infiniteminds.articles;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ public class ArticlesList extends AppCompatActivity {
     private SwipeRefreshLayout swipeEditArticles;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private ArticleListAdapter adapter;
+    private ProgressBar progressBar;
 
     /**
      * This method initializes all the views on this Activity.
@@ -42,6 +45,7 @@ public class ArticlesList extends AppCompatActivity {
 
         listArticles = findViewById(R.id.listEditArticles);
         swipeEditArticles = findViewById(R.id.refreshEditArticles);
+        progressBar = findViewById(R.id.progressBar);
 
         swipeEditArticles.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -70,6 +74,8 @@ public class ArticlesList extends AppCompatActivity {
      * @author AlphaDvlpr.
      */
     protected void initArticlesList() {
+        progressBar.setVisibility(View.VISIBLE);
+
         mDatabase.collection("articles")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -84,6 +90,7 @@ public class ArticlesList extends AppCompatActivity {
                         adapter = new ArticleListAdapter(ArticlesList.this, articles);
                         listArticles.setLayoutManager(new LinearLayoutManager(ArticlesList.this));
                         listArticles.setAdapter(adapter);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
 

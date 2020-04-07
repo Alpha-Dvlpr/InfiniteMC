@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
-    tools:context="com.alphadvlpr.infiniteminds.navigation.Login">
+    tools:context="com.alphadvlpr.infiniteminds.navigation.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

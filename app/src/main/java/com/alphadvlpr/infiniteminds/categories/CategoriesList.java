@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class CategoriesList extends AppCompatActivity {
     private CategoryListAdapter adapter;
     private RecyclerView categoriesList;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
+    private ProgressBar progressBar;
 
     /**
      * The right-to-left and left-to-right swipe delete gesture for the RecyclerView.
@@ -74,6 +76,7 @@ public class CategoriesList extends AppCompatActivity {
 
         fab = findViewById(R.id.fab);
         categoriesList = findViewById(R.id.listCategories);
+        progressBar = findViewById(R.id.progressBar);
 
         setActions();
         initCategoriesList();
@@ -156,6 +159,8 @@ public class CategoriesList extends AppCompatActivity {
      * @author AlphaDvlpr.
      */
     protected void initCategoriesList() {
+        progressBar.setVisibility(View.VISIBLE);
+
         mDatabase.collection("categories")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -171,6 +176,7 @@ public class CategoriesList extends AppCompatActivity {
                         adapter = new CategoryListAdapter(categories);
                         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(categoriesList);
                         categoriesList.setAdapter(adapter);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
     }
