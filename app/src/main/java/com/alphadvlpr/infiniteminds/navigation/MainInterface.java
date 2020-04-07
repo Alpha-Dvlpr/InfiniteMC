@@ -93,9 +93,10 @@ public class MainInterface extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 makeToast("WISH TO SEE YOU SOON!");
 
-                Intent intent = new Intent(MainInterface.this, UsersFragment.class);
+                Intent intent = new Intent(MainInterface.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("target", "USERS");
                 startActivity(intent);
                 finish();
             }

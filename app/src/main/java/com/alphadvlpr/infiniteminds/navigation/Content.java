@@ -161,7 +161,8 @@ public class Content extends AppCompatActivity {
                     aux.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent toCategorySearch = new Intent(Content.this, SearchFragment.class);
+                            Intent toCategorySearch = new Intent(Content.this, MainActivity.class);
+                            toCategorySearch.putExtra("target", "SEARCH");
                             toCategorySearch.putExtra("category", finalAux.getText().toString().toLowerCase());
                             startActivity(toCategorySearch);
                         }

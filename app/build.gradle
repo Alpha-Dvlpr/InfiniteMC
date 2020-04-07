@@ -10,13 +10,13 @@ android {
         }
     }
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.alphadvlpr.infiniteminds"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 114
-        versionName "beta-14"
+        versionCode 115
+        versionName "beta-15"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

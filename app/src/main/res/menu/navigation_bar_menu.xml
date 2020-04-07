@@ -18,7 +18,7 @@
         android:title="@string/search"/>
 
     <item
-        android:id="@+id/menuAbout"
+        android:id="@+id/menuInfo"
         android:icon="@drawable/ic_info_highlight"
         android:title="@string/info" />
 

@@ -1,5 +1,6 @@
 package com.alphadvlpr.infiniteminds.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -71,13 +72,16 @@ public class SearchFragment extends Fragment {
         setActions();
 
         context = getContext();
+        Activity activity = getActivity();
 
-        Intent prev = getActivity().getIntent();
-        String prevCategory = prev.getStringExtra("category");
+        if (activity != null) {
+            Intent prev = activity.getIntent();
+            String prevCategory = prev.getStringExtra("category");
 
-        if (prevCategory != null) {
-            searchByChip(prevCategory.toLowerCase());
-            searchEditText.setText(prevCategory.toUpperCase());
+            if (prevCategory != null) {
+                searchByChip(prevCategory.toLowerCase());
+                searchEditText.setText(prevCategory.toUpperCase());
+            }
         }
 
         return view;

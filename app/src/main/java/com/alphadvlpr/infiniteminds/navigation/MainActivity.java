@@ -1,5 +1,6 @@
 package com.alphadvlpr.infiniteminds.navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.menuSearch:
                     selectedFragment = new SearchFragment();
                     break;
-                case R.id.menuAbout:
+                case R.id.menuInfo:
                     selectedFragment = new InfoFragment();
                     break;
                 case R.id.menuUsers:
@@ -67,6 +68,39 @@ public class MainActivity extends AppCompatActivity {
 
         MobileAds.initialize(this, "ca-app-pub-2122172706327985~8237512049");
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
+        Intent intent = getIntent();
+        String target = intent.getStringExtra("target");
+
+        if (target != null) {
+            Fragment selectedFragment = null;
+
+            switch (target) {
+                case "HOME":
+                    selectedFragment = new HomeFragment();
+                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                    break;
+                case "TRENDING":
+                    selectedFragment = new TrendingFragment();
+                    bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                    break;
+                case "SEARCH":
+                    selectedFragment = new SearchFragment();
+                    bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                    break;
+                case "INFO":
+                    selectedFragment = new InfoFragment();
+                    bottomNavigationView.getMenu().getItem(3).setChecked(true);
+                    break;
+                case "USERS":
+                    selectedFragment = new UsersFragment();
+                    bottomNavigationView.getMenu().getItem(4).setChecked(true);
+                    break;
+            }
+
+            assert selectedFragment != null;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, selectedFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
+        }
     }
 }

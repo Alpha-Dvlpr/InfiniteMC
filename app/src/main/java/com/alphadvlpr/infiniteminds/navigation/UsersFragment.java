@@ -1,12 +1,9 @@
 package com.alphadvlpr.infiniteminds.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -19,8 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.alphadvlpr.infiniteminds.R;
-import com.alphadvlpr.infiniteminds.navigation.MainInterface;
 import com.alphadvlpr.infiniteminds.objects.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +47,7 @@ public class UsersFragment extends Fragment {
     private Button changePassword;
     private Switch switchShowPassword;
     private Context context;
+    private Activity activity;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -71,6 +71,7 @@ public class UsersFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
 
         context = getContext();
+        activity = getActivity();
 
         progressBar.setVisibility(View.GONE);
         setActions();
@@ -103,7 +104,7 @@ public class UsersFragment extends Fragment {
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
-                        getActivity().finish();
+                        activity.finish();
                     }
                 });
     }
@@ -142,7 +143,7 @@ public class UsersFragment extends Fragment {
                     login.setVisibility(View.GONE);
 
                     auth.signInWithEmailAndPassword(etUser.getText().toString(), etPassword.getText().toString())
-                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
