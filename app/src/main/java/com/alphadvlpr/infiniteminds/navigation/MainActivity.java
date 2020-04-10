@@ -75,16 +75,16 @@ public class MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
 
             switch (target) {
-                case "HOME":
-                    selectedFragment = new HomeFragment();
-                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
-                    break;
                 case "TRENDING":
                     selectedFragment = new TrendingFragment();
-                    bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
                     break;
                 case "SEARCH":
                     selectedFragment = new SearchFragment();
+                    bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                    break;
+                case "HOME":
+                    selectedFragment = new HomeFragment();
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
                     break;
                 case "INFO":
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, selectedFragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
+            bottomNavigationView.getMenu().getItem(2).setChecked(true);
         }
     }
 }

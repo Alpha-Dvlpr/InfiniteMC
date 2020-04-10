@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,6 +30,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,12 +47,17 @@ public class SearchFragment extends Fragment {
 
     private RecyclerView listSearch;
     private SearchView searchView;
-    private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
-    private ArrayList<Article> dataSearchList;
     private EditText searchEditText;
     private ChipGroup listChips;
     private Context context;
     private ProgressBar progressBar;
+    private final int QUERY_LIMIT = 15;
+    private DocumentSnapshot lastVisible;
+    private boolean isScrolling = false;
+    private boolean isLastItemReached = false;
+    private ArrayList<Article> articles;
+    private LinearLayoutManager layout;
+    private ArticleAdapter adapter;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -73,6 +80,7 @@ public class SearchFragment extends Fragment {
 
         context = getContext();
         Activity activity = getActivity();
+        layout = new LinearLayoutManager(context);
 
         if (activity != null) {
             Intent prev = activity.getIntent();
@@ -135,35 +143,36 @@ public class SearchFragment extends Fragment {
         searchEditText.setTextColor(Color.BLACK);
         searchEditText.setHintTextColor(Color.DKGRAY);
 
-        mDatabase.collection("categories")
-                .orderBy("name", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
-                            Category aux = qds.toObject(Category.class);
-                            final Chip chip = new Chip(context);
+        Query query = FirebaseFirestore.getInstance()
+                .collection("categories")
+                .orderBy("name", Query.Direction.ASCENDING);
 
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            layoutParams.setMargins(5, 5, 5, 5);
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                    Category aux = qds.toObject(Category.class);
+                    final Chip chip = new Chip(context);
 
-                            chip.setLayoutParams(layoutParams);
-                            chip.setText(aux.getName().toUpperCase());
-                            chip.setTextColor(Color.BLACK);
-                            chip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.colorAccent));
-                            chip.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    searchByChip(chip.getText().toString().toLowerCase());
-                                    searchEditText.setText(chip.getText().toString());
-                                }
-                            });
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(5, 5, 5, 5);
 
-                            listChips.addView(chip);
+                    chip.setLayoutParams(layoutParams);
+                    chip.setText(aux.getName().toUpperCase());
+                    chip.setTextColor(Color.BLACK);
+                    chip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.colorAccent));
+                    chip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            searchByChip(chip.getText().toString().toLowerCase());
+                            searchEditText.setText(chip.getText().toString());
                         }
-                    }
-                });
+                    });
+
+                    listChips.addView(chip);
+                }
+            }
+        });
     }
 
     /**
@@ -177,39 +186,92 @@ public class SearchFragment extends Fragment {
     private void searchByName(final ArrayList<String> s) {
         progressBar.setVisibility(View.VISIBLE);
 
-        mDatabase.collection("articles")
+        Query query = FirebaseFirestore.getInstance()
+                .collection("articles")
                 .whereArrayContainsAny("keywords", s)
                 .orderBy("title", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            makeToast("NO ARTICLES FOUND");
-                        } else {
-                            dataSearchList = new ArrayList<>();
+                .limit(QUERY_LIMIT);
 
-                            for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
-                                Article entry = qds.toObject(Article.class);
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots.isEmpty()) {
+                    makeToast("NO ARTICLES FOUND");
+                } else {
+                    articles = new ArrayList<>();
 
-                                if (!checkExist(entry)) {
-                                    dataSearchList.add(entry);
-                                }
-                            }
+                    for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                        Article entry = qds.toObject(Article.class);
 
-                            ArticleAdapter adapter = new ArticleAdapter(context, dataSearchList);
-                            listSearch.setLayoutManager(new LinearLayoutManager(context));
-                            listSearch.setAdapter(adapter);
-                            progressBar.setVisibility(View.INVISIBLE);
+                        if (!checkExist(entry)) {
+                            articles.add(entry);
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("SEARCH_ERROR", "onFailure: " + e.getMessage());
-                    }
-                });
+
+                    adapter = new ArticleAdapter(context, articles);
+                    listSearch.setLayoutManager(layout);
+                    listSearch.setAdapter(adapter);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                    RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+
+                            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                                isScrolling = true;
+                            }
+                        }
+
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+
+                            int firstVisibleItem = layout.findFirstVisibleItemPosition();
+                            int visibleItemCount = layout.getChildCount();
+                            int totalItemCount = layout.getItemCount();
+
+                            if (isScrolling && (firstVisibleItem + visibleItemCount == totalItemCount) && !isLastItemReached) {
+                                isScrolling = false;
+
+                                makeToast("Loading more articles...");
+
+                                Query nextQuery = FirebaseFirestore.getInstance()
+                                        .collection("articles")
+                                        .whereArrayContainsAny("keywords", s)
+                                        .orderBy("title", Query.Direction.ASCENDING)
+                                        .startAfter(lastVisible)
+                                        .limit(QUERY_LIMIT);
+
+                                nextQuery.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                                            articles.add(qds.toObject(Article.class));
+                                        }
+
+                                        adapter.notifyDataSetChanged();
+                                        lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                                        if (queryDocumentSnapshots.size() < QUERY_LIMIT) {
+                                            isLastItemReached = true;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    };
+
+                    listSearch.addOnScrollListener(onScrollListener);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("SEARCH_ERROR", "onFailure: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -223,39 +285,93 @@ public class SearchFragment extends Fragment {
     private void searchByCategory(final ArrayList<String> s) {
         progressBar.setVisibility(View.VISIBLE);
 
-        mDatabase.collection("articles")
+        Query query = FirebaseFirestore.getInstance()
+                .collection("articles")
                 .whereArrayContainsAny("categories", s)
                 .orderBy("title", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            makeToast("NO CATEGORIES FOUND");
-                        } else {
-                            dataSearchList = new ArrayList<>();
+                .limit(QUERY_LIMIT);
 
-                            for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
-                                Article entry = qds.toObject(Article.class);
 
-                                if (!checkExist(entry)) {
-                                    dataSearchList.add(entry);
-                                }
-                            }
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots.isEmpty()) {
+                    makeToast("NO CATEGORIES FOUND");
+                } else {
+                    articles = new ArrayList<>();
 
-                            ArticleAdapter adapter = new ArticleAdapter(context, dataSearchList);
-                            listSearch.setLayoutManager(new LinearLayoutManager(context));
-                            listSearch.setAdapter(adapter);
-                            progressBar.setVisibility(View.INVISIBLE);
+                    for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                        Article entry = qds.toObject(Article.class);
+
+                        if (!checkExist(entry)) {
+                            articles.add(entry);
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CATEGORY_ERROR", "onFailure: " + e.getMessage());
-                    }
-                });
+
+                    adapter = new ArticleAdapter(context, articles);
+                    listSearch.setLayoutManager(layout);
+                    listSearch.setAdapter(adapter);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                    RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+
+                            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                                isScrolling = true;
+                            }
+                        }
+
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+
+                            int firstVisibleItem = layout.findFirstVisibleItemPosition();
+                            int visibleItemCount = layout.getChildCount();
+                            int totalItemCount = layout.getItemCount();
+
+                            if (isScrolling && (firstVisibleItem + visibleItemCount == totalItemCount) && !isLastItemReached) {
+                                isScrolling = false;
+
+                                makeToast("Loading more articles...");
+
+                                Query nextQuery = FirebaseFirestore.getInstance()
+                                        .collection("articles")
+                                        .whereArrayContainsAny("categories", s)
+                                        .orderBy("title", Query.Direction.ASCENDING)
+                                        .startAfter(lastVisible)
+                                        .limit(QUERY_LIMIT);
+
+                                nextQuery.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                                            articles.add(qds.toObject(Article.class));
+                                        }
+
+                                        adapter.notifyDataSetChanged();
+                                        lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                                        if (queryDocumentSnapshots.size() < QUERY_LIMIT) {
+                                            isLastItemReached = true;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    };
+
+                    listSearch.addOnScrollListener(onScrollListener);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("CATEGORY_ERROR", "onFailure: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -268,35 +384,88 @@ public class SearchFragment extends Fragment {
     private void searchByChip(final String s) {
         progressBar.setVisibility(View.VISIBLE);
 
-        mDatabase.collection("articles")
+        Query query = FirebaseFirestore.getInstance()
+                .collection("articles")
                 .whereArrayContains("categories", s)
                 .orderBy("title", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            makeToast("THERE ARE NO ARTICLES WITH '" + s + "' CATEGORY");
-                        } else {
-                            dataSearchList = new ArrayList<>();
+                .limit(QUERY_LIMIT);
 
-                            for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
-                                dataSearchList.add(qds.toObject(Article.class));
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots.isEmpty()) {
+                    makeToast("THERE ARE NO ARTICLES WITH '" + s + "' CATEGORY");
+                } else {
+                    articles = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                        articles.add(qds.toObject(Article.class));
+                    }
+
+                    adapter = new ArticleAdapter(context, articles);
+                    listSearch.setLayoutManager(layout);
+                    listSearch.setAdapter(adapter);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                    RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            super.onScrollStateChanged(recyclerView, newState);
+
+                            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                                isScrolling = true;
                             }
-
-                            ArticleAdapter adapter = new ArticleAdapter(context, dataSearchList);
-                            listSearch.setLayoutManager(new LinearLayoutManager(context));
-                            listSearch.setAdapter(adapter);
-                            progressBar.setVisibility(View.INVISIBLE);
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("CHIP_ERROR", "onFailure: " + e.getMessage());
-                    }
-                });
+
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+
+                            int firstVisibleItem = layout.findFirstVisibleItemPosition();
+                            int visibleItemCount = layout.getChildCount();
+                            int totalItemCount = layout.getItemCount();
+
+                            if (isScrolling && (firstVisibleItem + visibleItemCount == totalItemCount) && !isLastItemReached) {
+                                isScrolling = false;
+
+                                makeToast("Loading more articles...");
+
+                                Query nextQuery = FirebaseFirestore.getInstance()
+                                        .collection("articles")
+                                        .whereArrayContains("categories", s)
+                                        .orderBy("title", Query.Direction.ASCENDING)
+                                        .startAfter(lastVisible)
+                                        .limit(QUERY_LIMIT);
+
+                                nextQuery.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                                            articles.add(qds.toObject(Article.class));
+                                        }
+
+                                        adapter.notifyDataSetChanged();
+                                        lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                                        if (queryDocumentSnapshots.size() < QUERY_LIMIT) {
+                                            isLastItemReached = true;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    };
+
+                    listSearch.addOnScrollListener(onScrollListener);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("CHIP_ERROR", "onFailure: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -311,8 +480,8 @@ public class SearchFragment extends Fragment {
      * @author AlphaDvlpr.
      */
     private boolean checkExist(Article actual) {
-        for (int i = 0; i < dataSearchList.size(); i++) {
-            if (dataSearchList.get(i).getTitle().equals(actual.getTitle())) {
+        for (int i = 0; i < articles.size(); i++) {
+            if (articles.get(i).getTitle().equals(actual.getTitle())) {
                 return true;
             }
         }

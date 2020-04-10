@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +18,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Article;
 import com.alphadvlpr.infiniteminds.utilities.ArticleAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,12 +37,17 @@ import java.util.ArrayList;
  */
 public class HomeFragment extends Fragment {
 
-    private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = mDatabase.collection("articles");
     private RecyclerView listMain;
     private SwipeRefreshLayout swipeMainArticles;
     private Context context;
     private ProgressBar progressBar;
+    private final int QUERY_LIMIT = 15;
+    private DocumentSnapshot lastVisible;
+    private boolean isScrolling = false;
+    private boolean isLastItemReached = false;
+    private ArrayList<Article> articles;
+    private LinearLayoutManager layout;
+    private ArticleAdapter adapter;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -85,25 +96,89 @@ public class HomeFragment extends Fragment {
     private void initMainList() {
         progressBar.setVisibility(View.VISIBLE);
 
-        collectionReference
+        Query query = FirebaseFirestore.getInstance()
+                .collection("articles")
                 .orderBy("date", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .limit(QUERY_LIMIT);
+
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                articles = new ArrayList<>();
+
+                for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                    articles.add(qds.toObject(Article.class));
+                }
+
+                adapter = new ArticleAdapter(context, articles);
+                layout = new LinearLayoutManager(context);
+                listMain.setLayoutManager(layout);
+                listMain.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
+                lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        ArrayList<Article> dataMainList = new ArrayList<>();
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
 
-                        for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
-                            dataMainList.add(qds.toObject(Article.class));
+                        if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                            isScrolling = true;
                         }
-
-                        listMain.setLayoutManager(new LinearLayoutManager(context));
-                        ArticleAdapter adapter = new ArticleAdapter(context, dataMainList);
-                        listMain.setAdapter(adapter);
-                        progressBar.setVisibility(View.INVISIBLE);
                     }
-                });
+
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                        int firstVisibleItem = layout.findFirstVisibleItemPosition();
+                        int visibleItemCount = layout.getChildCount();
+                        int totalItemCount = layout.getItemCount();
+
+                        if (isScrolling && (firstVisibleItem + visibleItemCount == totalItemCount) && !isLastItemReached) {
+                            isScrolling = false;
+
+                            makeToast("Loading more articles...");
+
+                            Query nextQuery = FirebaseFirestore.getInstance()
+                                    .collection("articles")
+                                    .orderBy("date", Query.Direction.DESCENDING)
+                                    .startAfter(lastVisible)
+                                    .limit(QUERY_LIMIT);
+
+                            nextQuery.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot qds : queryDocumentSnapshots) {
+                                        articles.add(qds.toObject(Article.class));
+                                    }
+
+                                    adapter.notifyDataSetChanged();
+                                    lastVisible = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
+
+                                    if (queryDocumentSnapshots.size() < QUERY_LIMIT) {
+                                        isLastItemReached = true;
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
+
+                listMain.addOnScrollListener(onScrollListener);
+            }
+        });
 
         swipeMainArticles.setRefreshing(false);
+    }
+
+    /**
+     * Method to show a Toast notification on the current view.
+     *
+     * @param msg The message to be displayed.
+     * @author AlphaDvlpr.
+     */
+    private void makeToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }

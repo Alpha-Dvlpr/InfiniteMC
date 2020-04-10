@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuHome"
-        android:icon="@drawable/icon_home"
-        android:title="@string/home"/>
-
-    <item
         android:id="@+id/menuTrend"
         android:icon="@drawable/icon_trending"
         android:title="@string/trending" />
@@ -16,6 +11,11 @@
         android:id="@+id/menuSearch"
         android:icon="@drawable/icon_search"
         android:title="@string/search"/>
+
+    <item
+        android:id="@+id/menuHome"
+        android:icon="@drawable/icon_home"
+        android:title="@string/home"/>
 
     <item
         android:id="@+id/menuInfo"
