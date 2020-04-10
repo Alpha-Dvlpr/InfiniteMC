@@ -5,7 +5,7 @@
         <item name="backgroundColor">@color/backgroundColor</item>
     </style>
 
-    <style name="DarkThemeSwitch" parent="Theme.AppCompat.Light">
+    <style name="DarkThemeSwitch" parent="Theme.MaterialComponents.Light">
         <item name="colorControlActivated">@color/activeSwitch</item>
         <item name="colorSwitchThumbNormal">@color/inactiveSwitch</item>
         <item name="android:colorForeground">@color/switchForeground</item>
@@ -16,7 +16,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="DarkAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="DarkAppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="DarkAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="DarkAppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 </resources>

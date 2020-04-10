@@ -151,7 +151,7 @@ public class SearchFragment extends Fragment {
                             chip.setLayoutParams(layoutParams);
                             chip.setText(aux.getName().toUpperCase());
                             chip.setTextColor(Color.BLACK);
-                            chip.setChipBackgroundColor(getResources().getColorStateList(R.color.colorAccent));
+                            chip.setChipBackgroundColor(context.getResources().getColorStateList(R.color.colorAccent));
                             chip.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

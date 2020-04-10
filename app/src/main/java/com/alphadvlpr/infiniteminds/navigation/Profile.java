@@ -250,11 +250,12 @@ public class Profile extends AppCompatActivity {
                                                                                             makeToast("ALL DATA DELETED SUCCESSFULLY");
                                                                                             dialogInside.cancel();
 
-                                                                                            //Intent toHome = new Intent(Profile.this, Home.class);
-                                                                                            //toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                                            //toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                                            //toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                                            //startActivity(toHome);
+                                                                                            Intent toHome = new Intent(Profile.this, MainActivity.class);
+                                                                                            toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                            toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                            toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                            toHome.putExtra("target", "HOME");
+                                                                                            startActivity(toHome);
                                                                                             finish();
                                                                                         } else {
                                                                                             makeToast("ERROR WHILE DELETING THE ACCOUNT");
