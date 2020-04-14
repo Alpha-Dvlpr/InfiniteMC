@@ -1,6 +1,7 @@
 package com.alphadvlpr.infiniteminds.navigation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -94,7 +96,7 @@ public class Content extends AppCompatActivity {
      */
     protected void setInformationToView() {
         long selectedDownloads = receivedIntent.getLongExtra("visits", -1);
-        ArrayList<String> imagesList = receivedIntent.getStringArrayListExtra("image");
+        ArrayList<String> imagesList;
         ArrayList<String> selectedCategories = receivedIntent.getStringArrayListExtra("categories");
         String selectedContent = receivedIntent.getStringExtra("content");
         String selectedTitle = receivedIntent.getStringExtra("title");
@@ -102,6 +104,28 @@ public class Content extends AppCompatActivity {
 
         title.setText(selectedTitle);
         visits.setText("Visits: " + selectedDownloads);
+
+        int numberOfImages = receivedIntent.getIntExtra("numberOfImages", -1);
+
+        if (numberOfImages <= 2) {
+            imagesList = receivedIntent.getStringArrayListExtra("image");
+            Toast.makeText(this, "From array: " + imagesList.size(), Toast.LENGTH_SHORT).show();
+        } else {
+            ArrayList<String> imageIDs = receivedIntent.getStringArrayListExtra("image");
+            String reference = receivedIntent.getStringExtra("reference");
+            SharedPreferences preferences = getSharedPreferences(reference, MODE_PRIVATE);
+            imagesList = new ArrayList<>();
+
+            for (int i = 0; i < imageIDs.size(); i++) {
+                String currentImage = preferences.getString(imageIDs.get(i), "");
+
+                if (!currentImage.equals("")) {
+                    imagesList.add(currentImage);
+                }
+            }
+
+            Toast.makeText(this, "Got " + imagesList.size() + "/" + imageIDs.size() + " images", Toast.LENGTH_SHORT).show();
+        }
 
         if (Objects.requireNonNull(imagesList).isEmpty()) {
             imageContainer.setVisibility(View.GONE);

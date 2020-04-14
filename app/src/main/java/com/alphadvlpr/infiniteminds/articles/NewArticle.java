@@ -225,8 +225,8 @@ public class NewArticle extends AppCompatActivity {
         buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (images.size() == 2) {
-                    makeToast("Maximum 2 images per article");
+                if (images.size() == 6) {
+                    makeToast("Maximum 6 images per article");
                 } else {
                     String[] types = {"image/jpg", "image/jpeg", "image/*"};
 

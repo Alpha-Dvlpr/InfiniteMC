@@ -77,18 +77,4 @@ public class ImageDecoder {
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         return Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
     }
-
-    /**
-     * This method converts a Bitmap into a Blob.
-     *
-     * @param image The Bitmap to be converted.
-     * @return Returns the Bitmap converted into byte array.
-     * @author AlphaDvlpr.
-     */
-    public static byte[] encodeToBlob(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
-
-        return baos.toByteArray();
-    }
 }

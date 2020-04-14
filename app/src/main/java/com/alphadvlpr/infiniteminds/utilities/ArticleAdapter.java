@@ -2,6 +2,7 @@ package com.alphadvlpr.infiniteminds.utilities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -17,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.navigation.Content;
 import com.alphadvlpr.infiniteminds.objects.Article;
+import com.alphadvlpr.infiniteminds.objects.Image;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,39 +91,65 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if (viewType == CONTENT) {
             ArticleViewHolder articleHolder = (ArticleViewHolder) holder;
-            final Article article = articles.get(getRealPosition(position));
+            Article article = articles.get(getRealPosition(position));
 
-            if (article.getImages().isEmpty()) {
+            final String title = article.getTitle();
+            final String content = article.getContent();
+            final ArrayList<String> images = article.getImages();
+            final ArrayList<String> downloadURLs = article.getDownloadURL();
+            final ArrayList<String> categories = article.getCategories();
+            final ArrayList<String> keywords = article.getKeywords();
+            final Long visits = article.getVisits();
+
+            if (images.isEmpty()) {
                 articleHolder.image.setVisibility(View.GONE);
             } else {
-                articleHolder.image.setImageBitmap(ImageDecoder.decode(article.getImages().get(0)));
+                articleHolder.image.setImageBitmap(ImageDecoder.decode(images.get(0)));
             }
 
-            articleHolder.title.setText(article.getTitle());
-            articleHolder.visits.setText("Visitas: " + article.getVisits());
+            articleHolder.title.setText(title);
+            articleHolder.visits.setText("Visitas: " + visits);
             articleHolder.container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle b = new Bundle();
-                    b.putString("title", article.getTitle());
-                    b.putString("content", article.getContent());
-                    b.putStringArrayList("image", article.getImages());
-                    b.putLong("visits", article.getVisits());
-                    b.putStringArrayList("downloadURL", article.getDownloadURL());
-                    b.putStringArrayList("categories", article.getCategories());
+                    String reference = "";
+                    for (String s : keywords) {
+                        reference += "_" + s;
+                    }
 
                     Intent toContent = new Intent(context, Content.class);
                     toContent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    String reference = "";
-                    for (String s : Objects.requireNonNull(article).getKeywords()) {
-                        reference += "_" + s;
+                    toContent.putExtra("title", title);
+                    toContent.putExtra("content", content);
+                    toContent.putExtra("visits", visits);
+                    toContent.putStringArrayListExtra("downloadURL", downloadURLs);
+                    toContent.putStringArrayListExtra("categories", categories);
+                    toContent.putExtra("numberOfImages", images.size());
+
+                    if (images.size() > 2) {
+                        ArrayList<String> imageIDs = new ArrayList<>();
+                        SharedPreferences preferences = context.getSharedPreferences(reference, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        for (int i = 0; i < images.size(); i++) {
+                            String currentImage = images.get(i);
+                            String id = "image" + i;
+
+                            editor.putString(id, currentImage);
+                            imageIDs.add(id);
+                        }
+
+                        toContent.putExtra("reference", reference);
+                        toContent.putStringArrayListExtra("image", imageIDs);
+                        editor.apply();
+                    } else {
+                        toContent.putStringArrayListExtra("image", images);
                     }
 
                     mDatabase.collection("articles").document(reference)
                             .update("visits", FieldValue.increment(1));
 
-                    toContent.putExtras(b);
                     context.startActivity(toContent);
                 }
             });
