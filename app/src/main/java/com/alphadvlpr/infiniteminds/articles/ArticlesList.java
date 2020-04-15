@@ -14,7 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Article;
-import com.alphadvlpr.infiniteminds.utilities.ArticleAdapter;
 import com.alphadvlpr.infiniteminds.utilities.ArticleListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;

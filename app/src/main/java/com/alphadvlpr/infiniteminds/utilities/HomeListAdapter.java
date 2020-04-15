@@ -3,14 +3,12 @@ package com.alphadvlpr.infiniteminds.utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.navigation.Content;
 import com.alphadvlpr.infiniteminds.objects.Article;
-import com.alphadvlpr.infiniteminds.objects.Image;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.firestore.FieldValue;
@@ -27,15 +24,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * Custom adapter for all the RecyclerViews of the app that contain articles but only the ones that
- * a normal user can see e.g. Home, Search, Trending.
+ * Custom adapter for Home RecyclerView.
  *
  * @author AlphaDvlpr.
  */
-public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int LIST_AD_DELTA = 10;
     private static final int CONTENT = 0;
@@ -52,7 +47,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
      * @param articles The ArrayList where the articles will be held.
      * @author AlphaDvlpr.
      */
-    public ArticleAdapter(Context context, List<Article> articles) {
+    public HomeListAdapter(Context context, List<Article> articles) {
         this.context = context;
         this.articles = articles;
     }
@@ -72,7 +67,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == CONTENT) {
             return new ArticleViewHolder(inflateResource(parent, R.layout.item_article_big));
         } else {
-            return new AdViewHolder(inflateResource(parent, R.layout.item_ad));
+            return new AdViewHolder(inflateResource(parent, R.layout.item_ad_home));
         }
     }
 

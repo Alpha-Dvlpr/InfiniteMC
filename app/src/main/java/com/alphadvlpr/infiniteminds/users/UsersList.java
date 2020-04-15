@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alphadvlpr.infiniteminds.R;
-import com.alphadvlpr.infiniteminds.objects.Article;
 import com.alphadvlpr.infiniteminds.objects.User;
-import com.alphadvlpr.infiniteminds.utilities.ArticleAdapter;
 import com.alphadvlpr.infiniteminds.utilities.UserListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

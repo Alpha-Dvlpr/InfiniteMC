@@ -6,7 +6,9 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +26,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -109,7 +113,6 @@ public class Content extends AppCompatActivity {
 
         if (numberOfImages <= 2) {
             imagesList = receivedIntent.getStringArrayListExtra("image");
-            Toast.makeText(this, "From array: " + imagesList.size(), Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<String> imageIDs = receivedIntent.getStringArrayListExtra("image");
             String reference = receivedIntent.getStringExtra("reference");
@@ -123,8 +126,6 @@ public class Content extends AppCompatActivity {
                     imagesList.add(currentImage);
                 }
             }
-
-            Toast.makeText(this, "Got " + imagesList.size() + "/" + imageIDs.size() + " images", Toast.LENGTH_SHORT).show();
         }
 
         if (Objects.requireNonNull(imagesList).isEmpty()) {

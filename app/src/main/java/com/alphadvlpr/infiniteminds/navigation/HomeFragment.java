@@ -17,11 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Article;
-import com.alphadvlpr.infiniteminds.utilities.ArticleAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.alphadvlpr.infiniteminds.utilities.HomeListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -47,7 +44,7 @@ public class HomeFragment extends Fragment {
     private boolean isLastItemReached = false;
     private ArrayList<Article> articles;
     private LinearLayoutManager layout;
-    private ArticleAdapter adapter;
+    private HomeListAdapter adapter;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -110,7 +107,7 @@ public class HomeFragment extends Fragment {
                     articles.add(qds.toObject(Article.class));
                 }
 
-                adapter = new ArticleAdapter(context, articles);
+                adapter = new HomeListAdapter(context, articles);
                 layout = new LinearLayoutManager(context);
                 listMain.setLayoutManager(layout);
                 listMain.setAdapter(adapter);

@@ -3,7 +3,10 @@
 
     <!-- AD MOB -->
     <string name="adTest">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="adPublish">ca-app-pub-2122172706327985/1613228097</string>
+    <string name="homeListAd">ca-app-pub-2122172706327985/1000353494</string>
+    <string name="searchListAd">ca-app-pub-2122172706327985/9808781805</string>
+    <string name="trendingListAd">ca-app-pub-2122172706327985/8304128441</string>
+    <string name="contentAd">ca-app-pub-2122172706327985/9965582522</string>
 
     <!-- CONTENT && ITEM_ARTICLE_SMALL && ARTICLE_LIST && ITEM_ARTICLE_BIG -->
     <string name="content_server_1">DOWNLOAD</string>

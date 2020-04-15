@@ -22,7 +22,7 @@ import java.util.Objects;
 
 /**
  * Custom adapter for the RecyclerViews that contain the articles to be edited. The only difference
- * with {@link ArticleAdapter} is that this one doesn't contain ads.
+ * with {@link HomeListAdapter} is that this one doesn't contain ads.
  *
  * @author AlphaDvlpr.
  */

@@ -24,7 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Article;
 import com.alphadvlpr.infiniteminds.objects.Category;
-import com.alphadvlpr.infiniteminds.utilities.ArticleAdapter;
+import com.alphadvlpr.infiniteminds.utilities.HomeListAdapter;
+import com.alphadvlpr.infiniteminds.utilities.SearchListAdapter;
 import com.alphadvlpr.infiniteminds.utilities.StringProcessor;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,7 +58,7 @@ public class SearchFragment extends Fragment {
     private boolean isLastItemReached = false;
     private ArrayList<Article> articles;
     private LinearLayoutManager layout;
-    private ArticleAdapter adapter;
+    private SearchListAdapter adapter;
 
     /**
      * This method loads a custom view into a container to show it to the user
@@ -208,7 +209,7 @@ public class SearchFragment extends Fragment {
                         }
                     }
 
-                    adapter = new ArticleAdapter(context, articles);
+                    adapter = new SearchListAdapter(context, articles);
                     listSearch.setLayoutManager(layout);
                     listSearch.setAdapter(adapter);
                     progressBar.setVisibility(View.INVISIBLE);
@@ -308,7 +309,7 @@ public class SearchFragment extends Fragment {
                         }
                     }
 
-                    adapter = new ArticleAdapter(context, articles);
+                    adapter = new SearchListAdapter(context, articles);
                     listSearch.setLayoutManager(layout);
                     listSearch.setAdapter(adapter);
                     progressBar.setVisibility(View.INVISIBLE);
@@ -402,7 +403,7 @@ public class SearchFragment extends Fragment {
                         articles.add(qds.toObject(Article.class));
                     }
 
-                    adapter = new ArticleAdapter(context, articles);
+                    adapter = new SearchListAdapter(context, articles);
                     listSearch.setLayoutManager(layout);
                     listSearch.setAdapter(adapter);
                     progressBar.setVisibility(View.INVISIBLE);
