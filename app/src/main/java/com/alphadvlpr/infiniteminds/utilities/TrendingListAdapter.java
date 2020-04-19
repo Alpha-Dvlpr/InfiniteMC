@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom adapter for Home RecyclerView.
+ * Custom adapter for Trending RecyclerView.
  *
  * @author AlphaDvlpr.
  */

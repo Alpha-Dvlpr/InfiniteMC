@@ -2,6 +2,7 @@ package com.alphadvlpr.infiniteminds.articles;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Article;
-import com.alphadvlpr.infiniteminds.objects.Image;
 import com.alphadvlpr.infiniteminds.utilities.ImageDecoder;
 import com.alphadvlpr.infiniteminds.utilities.ImageListAdapter;
 import com.alphadvlpr.infiniteminds.utilities.StringProcessor;
@@ -48,8 +48,8 @@ import java.util.Objects;
 public class EditArticle extends AppCompatActivity {
 
     private static final int SELECT_FILE = 1;
+    private ArrayList<String> images;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
-    private ArrayList<Image> images = new ArrayList<>();
     private RecyclerView imagesList;
     private String reference = "";
     private ImageListAdapter adapter;
@@ -124,7 +124,6 @@ public class EditArticle extends AppCompatActivity {
         prev = getIntent();
 
         progressBar.setVisibility(View.GONE);
-
         setInformationToView();
         setActions();
     }
@@ -135,19 +134,29 @@ public class EditArticle extends AppCompatActivity {
      * @author AlphaDvlpr.
      */
     protected void setInformationToView() {
-        ArrayList<String> imagesStringBitmap = prev.getStringArrayListExtra("images"),
-                oldCategories = prev.getStringArrayListExtra("categories"),
-                oldDownloadLinks = prev.getStringArrayListExtra("downloadURL");
+        ArrayList<String> oldCategories = prev.getStringArrayListExtra("categories");
+        ArrayList<String> oldDownloadLinks = prev.getStringArrayListExtra("downloadURL");
 
         editTitle.setText(prev.getStringExtra("title"));
         editContent.setText(prev.getStringExtra("content"));
 
-        for (String key : Objects.requireNonNull(prev.getStringArrayListExtra("keywords"))) {
-            reference += "_" + key;
-        }
+        int numberOfImages = prev.getIntExtra("numberOfImages", -1);
 
-        for (String s : Objects.requireNonNull(imagesStringBitmap)) {
-            images.add(new Image(s));
+        if (numberOfImages <= 2) {
+            images = prev.getStringArrayListExtra("image");
+        } else {
+            ArrayList<String> imageIDs = prev.getStringArrayListExtra("image");
+            String reference = prev.getStringExtra("reference");
+            SharedPreferences preferences = getSharedPreferences(reference, MODE_PRIVATE);
+            images = new ArrayList<>();
+
+            for (int i = 0; i < imageIDs.size(); i++) {
+                String currentImage = preferences.getString(imageIDs.get(i), "");
+
+                if (!currentImage.equals("")) {
+                    images.add(currentImage);
+                }
+            }
         }
 
         imagesList.setLayoutManager(new LinearLayoutManager(this));
@@ -250,10 +259,7 @@ public class EditArticle extends AppCompatActivity {
                 newCategories.add(StringProcessor.removeSpecial(StringProcessor.removeAccents(editCategoryFive.getText().toString().toLowerCase())));
                 newCategories.add(StringProcessor.removeSpecial(StringProcessor.removeAccents(editCategorySix.getText().toString().toLowerCase())));
 
-                ArrayList<String> newImagesStringBitmap = new ArrayList<>();
-                for (Image i : images) {
-                    newImagesStringBitmap.add(i.getStringBitmap());
-                }
+                ArrayList<String> newImagesStringBitmap = new ArrayList<>(images);
 
                 if (newContent.isEmpty()) {
                     makeToast("Fields with '*' are required");
@@ -326,7 +332,7 @@ public class EditArticle extends AppCompatActivity {
                     Bitmap bmp = BitmapFactory.decodeStream(imageStream);
                     Bitmap scaled = ImageDecoder.getScaledBitmap(bmp, 480, 360);
 
-                    images.add(new Image(ImageDecoder.encode(scaled)));
+                    images.add(ImageDecoder.encode(scaled));
                 }
             }
         }

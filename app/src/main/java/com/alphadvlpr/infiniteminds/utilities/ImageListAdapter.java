@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alphadvlpr.infiniteminds.R;
-import com.alphadvlpr.infiniteminds.objects.Image;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ import java.util.ArrayList;
  */
 public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder> {
 
-    private ArrayList<Image> images;
+    private ArrayList<String> images;
 
     /**
      * This method initializes the context and the list for the adapter to work.
@@ -28,7 +27,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
      * @param images The ArrayList where the images will be held.
      * @author AlphaDvlpr.
      */
-    public ImageListAdapter(ArrayList<Image> images) {
+    public ImageListAdapter(ArrayList<String> images) {
         this.images = images;
     }
 
@@ -59,8 +58,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.View
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Image image = images.get(position);
-        String imageStringBitmap = image.getStringBitmap();
+        String imageStringBitmap = images.get(position);
         holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
         holder.image.setImageBitmap(ImageDecoder.decode(imageStringBitmap));
     }

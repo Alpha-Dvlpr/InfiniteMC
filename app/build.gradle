@@ -7,8 +7,8 @@ android {
         applicationId "com.alphadvlpr.infiniteminds"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 116
-        versionName "beta-16"
+        versionCode 117
+        versionName "beta-17"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

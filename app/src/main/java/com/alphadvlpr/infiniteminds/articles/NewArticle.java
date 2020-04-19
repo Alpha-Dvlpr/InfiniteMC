@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.objects.Article;
-import com.alphadvlpr.infiniteminds.objects.Image;
 import com.alphadvlpr.infiniteminds.utilities.ImageDecoder;
 import com.alphadvlpr.infiniteminds.utilities.ImageListAdapter;
 import com.alphadvlpr.infiniteminds.utilities.StringProcessor;
@@ -47,8 +46,7 @@ public class NewArticle extends AppCompatActivity {
 
     private static final int SELECT_FILE = 1;
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
-    private ArrayList<Image> images = new ArrayList<>();
-    private ArrayList<String> imagesStringBitmap = new ArrayList<>();
+    private ArrayList<String> images = new ArrayList<>();
     private RecyclerView imagesList;
     private ImageListAdapter adapter;
 
@@ -160,10 +158,6 @@ public class NewArticle extends AppCompatActivity {
                     }
                 }
 
-                for (Image i : images) {
-                    imagesStringBitmap.add(i.getStringBitmap());
-                }
-
                 if (title.isEmpty()) {
                     textTitle.setTextColor(Color.RED);
                 } else {
@@ -183,7 +177,7 @@ public class NewArticle extends AppCompatActivity {
                     buttonPublish.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    Article article = new Article(title, content, imagesStringBitmap, Timestamp.now(), categories, downloadURL, 0L, keywords);
+                    Article article = new Article(title, content, images, Timestamp.now(), categories, downloadURL, 0L, keywords);
 
                     String reference = "";
                     for (String key : keywords) {
@@ -272,7 +266,7 @@ public class NewArticle extends AppCompatActivity {
                     Bitmap bmp = BitmapFactory.decodeStream(imageStream);
                     Bitmap scaled = ImageDecoder.getScaledBitmap(bmp, 480, 360);
 
-                    images.add(new Image(ImageDecoder.encode(scaled)));
+                    images.add(ImageDecoder.encode(scaled));
                 }
             }
         }

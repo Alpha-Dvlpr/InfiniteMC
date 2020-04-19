@@ -2,6 +2,7 @@ package com.alphadvlpr.infiniteminds.utilities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alphadvlpr.infiniteminds.R;
 import com.alphadvlpr.infiniteminds.articles.EditArticle;
+import com.alphadvlpr.infiniteminds.navigation.Content;
 import com.alphadvlpr.infiniteminds.objects.Article;
 
 import java.util.ArrayList;
@@ -70,25 +72,55 @@ public class ArticleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ArticleListAdapter.ArticleViewHolder articleHolder = (ArticleListAdapter.ArticleViewHolder) holder;
-        final Article article = articles.get(position);
+        Article article = articles.get(position);
 
-        articleHolder.title.setText(article.getTitle());
+        final String title = article.getTitle();
+        final String content = article.getContent();
+        final ArrayList<String> images = article.getImages();
+        final ArrayList<String> downloadURLs = article.getDownloadURL();
+        final ArrayList<String> categories = article.getCategories();
+        final ArrayList<String> keywords = article.getKeywords();
+        final Long visits = article.getVisits();
+
+        articleHolder.title.setText(title);
         articleHolder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String reference = "";
+                for (String s : keywords) {
+                    reference += "_" + s;
+                }
+
                 Intent toEditArticle = new Intent(context, EditArticle.class);
                 toEditArticle.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                Bundle b = new Bundle();
-                b.putString("title", Objects.requireNonNull(article).getTitle());
-                b.putString("content", article.getContent());
-                b.putStringArrayList("images", article.getImages());
-                b.putLong("visits", article.getVisits());
-                b.putStringArrayList("downloadURL", article.getDownloadURL());
-                b.putStringArrayList("categories", article.getCategories());
-                b.putStringArrayList("keywords", article.getKeywords());
+                toEditArticle.putExtra("title", title);
+                toEditArticle.putExtra("content", content);
+                toEditArticle.putExtra("visits", visits);
+                toEditArticle.putStringArrayListExtra("downloadURL", downloadURLs);
+                toEditArticle.putStringArrayListExtra("categories", categories);
+                toEditArticle.putExtra("numberOfImages", images.size());
 
-                toEditArticle.putExtras(b);
+                if (images.size() > 2) {
+                    ArrayList<String> imageIDs = new ArrayList<>();
+                    SharedPreferences preferences = context.getSharedPreferences(reference, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    for (int i = 0; i < images.size(); i++) {
+                        String currentImage = images.get(i);
+                        String id = "image" + i;
+
+                        editor.putString(id, currentImage);
+                        imageIDs.add(id);
+                    }
+
+                    toEditArticle.putExtra("reference", reference);
+                    toEditArticle.putStringArrayListExtra("image", imageIDs);
+                    editor.apply();
+                } else {
+                    toEditArticle.putStringArrayListExtra("image", images);
+                }
+
                 context.startActivity(toEditArticle);
             }
         });
